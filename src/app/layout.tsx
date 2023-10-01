@@ -42,11 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
                 </Button>
               })}
-
             </Toolbar>
-
-
-
           </AppBar>
 
           <Box
