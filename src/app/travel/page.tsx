@@ -15,7 +15,7 @@ export default function TravelPage() {
         }}
       >
         <Typography variant="body1" gutterBottom>
-          Travel Page
+          Travel Page Deployment Test
         </Typography>
       </Box>
     </Container>
