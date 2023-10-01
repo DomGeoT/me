@@ -25,11 +25,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Box sx={{
             display: "flex",
             flexDirection: "row",
-            backgroundColor: 'background.paper',
             width: "100vw",
             height: `calc(${HEADER_HEIGHT} - 10)`,
             padding: `10px`,
-            alignItems: "center"
+            alignItems: "center",
+            borderBottom: "2px solid",
+            borderColor: "background.paper"
           }}>
             <Typography variant="h6" noWrap component="div" color="black">
               Dom Taylor
