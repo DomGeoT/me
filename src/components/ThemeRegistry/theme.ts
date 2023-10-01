@@ -17,6 +17,10 @@ const theme = createTheme({
       light: '#F5EBFF',
       contrastText: '#47008F',
     },
+    background: {
+      paper: "#f5f5f5",
+      default: "white"
+    }
   },
   typography: {
     fontFamily: roboto.style.fontFamily,
