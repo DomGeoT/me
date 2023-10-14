@@ -6,6 +6,7 @@ import FlightIcon from '@mui/icons-material/Flight';
 import ThemeRegistry from '@/components/ThemeRegistry/ThemeRegistry';
 import { Button } from '@mui/material';
 import { HEADER_HEIGHT } from '@/constants/layout';
+import zIndex from '@mui/material/styles/zIndex';
 
 export const metadata = {
   title: 'Next.js App Router + Material UI v5',
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
+        <title>Dom Taylor</title>
         <ThemeRegistry>
           <Box sx={{
             display: "flex",
@@ -30,7 +32,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             padding: `10px`,
             alignItems: "center",
             borderBottom: "2px solid",
-            borderColor: "background.paper"
+            backgroundColor: "background.default",
+            borderColor: "background.paper",
+            position: "fixed",
+            top: "0",
+            left: "0",
+            zIndex: 2000
           }}>
             <Typography variant="h6" noWrap component="div" color="black">
               Dom Taylor
@@ -56,7 +63,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               bgcolor: 'background.default',
               mt: ['48px', '56px', '64px'],
               p: 3,
-              height: `calc(100vh - ${HEADER_HEIGHT})`
+              height: `calc(100vh - ${HEADER_HEIGHT} - 6)`,
+              position: "relative"
             }}
           >
             {children}

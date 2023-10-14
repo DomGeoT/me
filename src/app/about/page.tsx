@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 export default function AboutPage() {
   return (
     <Container>
+      <title>Dom Taylor | About</title>
       <Box
         sx={{
           display: 'flex',

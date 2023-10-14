@@ -18,7 +18,7 @@ const theme = createTheme({
       contrastText: '#47008F',
     },
     background: {
-      paper: "#f5f5f5",
+      paper: "#fAfAfA",
       default: "white"
     }
   },
@@ -40,7 +40,7 @@ const theme = createTheme({
         {
           props: { variant: 'contained' },
           style: {
-            backgroundColor: '#FF5733',
+            backgroundColor: 'theme.pallete.primary.main',
             color: 'white',
             "& > *": {
               color: 'white',
@@ -53,6 +53,17 @@ const theme = createTheme({
           textTransform: 'none',
           borderRadius: '200px',
           paddingX: '15px',
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#FF5733',
+          color: 'white',
+          "& > *": {
+            color: 'white'
+          }
         },
       },
     },
