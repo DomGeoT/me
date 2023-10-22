@@ -1,19 +1,18 @@
 // mongodb.js
 
-import { MongoClient, MongoClientOptions } from 'mongodb'
+import { MongoClient, MongoClientOptions } from "mongodb"
 
 const uri = process.env.MONGODB_URI
-const options: MongoClientOptions = {
-}
+const options: MongoClientOptions = {}
 
 let client
 let clientPromise: Promise<MongoClient>
 
 if (!uri) {
-    throw new Error('Add Mongo URI to .env.local')
+    throw new Error("Add Mongo URI to .env.local")
 }
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === "development") {
     if (!global._mongoClientPromise) {
         client = new MongoClient(uri, options)
         global._mongoClientPromise = client.connect()
