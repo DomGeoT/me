@@ -12,15 +12,34 @@ import { Modal } from "../common"
 import Marked from "marked-react"
 
 import { FmdGood } from "@mui/icons-material"
-import { PostTripRequest } from "@/app/types/api/trips"
+import { PostTripRequest } from "@/types/api/trips"
 
 type Props = Readonly<{ open: boolean; onClose: () => void }>
 
 export function NewTripModal({ open, onClose }: Props) {
+    const [heading, setHeading] = React.useState<string>("")
+    const [description, setDescription] = React.useState<string>("")
     const [rawMarkdown, setRawMarkdown] = React.useState<string>("")
+    const [rawMarkdownWithHeading, setRawMarkdownWithHeading] =
+        React.useState<string>("")
     const [longitude, setLongitude] = React.useState<number>()
     const [latitude, setLatitude] = React.useState<number>()
 
+    const handleHeadingChange = React.useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            setHeading(event.target.value)
+        },
+        []
+    )
+    const handleDescriptionChange = React.useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            if (event.target.value.length > 200) {
+                return
+            }
+            setDescription(event.target.value)
+        },
+        []
+    )
     const handleRawMarkdownChange = React.useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
             setRawMarkdown(event.target.value)
@@ -28,13 +47,22 @@ export function NewTripModal({ open, onClose }: Props) {
         []
     )
 
+    React.useEffect(
+        () =>
+            setRawMarkdownWithHeading(
+                (heading ? `# ${heading}\n\n` : "") + rawMarkdown
+            ),
+        [heading, rawMarkdown]
+    )
+
     const handleCreateTrip = React.useCallback(async () => {
         if (!longitude || !latitude) {
             return
         }
         const body: PostTripRequest = {
-            heading: rawMarkdown.split("\n", 1)[0].replaceAll("#", "").trim(),
-            rawMarkdownContent: rawMarkdown,
+            heading,
+            description,
+            rawMarkdownContent: rawMarkdownWithHeading,
             longitude,
             latitude,
         }
@@ -70,14 +98,24 @@ export function NewTripModal({ open, onClose }: Props) {
                     maxHeight: "60vh",
                 }}
             >
-                {" "}
-                {/* Set maxHeight for dynamic sizing */}
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                     New Trip
                 </Typography>
                 <FormControl sx={{ flex: 1, overflowY: "auto" }}>
-                    {" "}
-                    {/* Use overflowY: 'auto' to enable scrolling when needed */}
+                    <FormLabel>Heading</FormLabel>
+                    <TextField
+                        sx={{ width: "100%" }}
+                        value={heading}
+                        onChange={handleHeadingChange}
+                    />
+
+                    <FormLabel>Description</FormLabel>
+                    <TextField
+                        sx={{ width: "100%" }}
+                        value={description}
+                        onChange={handleDescriptionChange}
+                    />
+
                     <Box
                         sx={{
                             display: "flex",
@@ -88,7 +126,7 @@ export function NewTripModal({ open, onClose }: Props) {
                         }}
                     >
                         <Box sx={{ flex: "1", pr: 4 }}>
-                            <FormLabel>Title</FormLabel>
+                            <FormLabel>Entry</FormLabel>
                             <TextField
                                 sx={{ width: "100%" }}
                                 multiline
@@ -98,7 +136,7 @@ export function NewTripModal({ open, onClose }: Props) {
                         </Box>
                         <Box sx={{ flex: "1" }}>
                             <FormLabel>Preview</FormLabel>
-                            <Marked>{rawMarkdown}</Marked>
+                            <Marked>{rawMarkdownWithHeading}</Marked>
                         </Box>
                     </Box>
                     <FormLabel>Location</FormLabel>

@@ -1,7 +1,7 @@
-import { Roboto } from "next/font/google"
+import { Jost } from "next/font/google"
 import { createTheme } from "@mui/material/styles"
 
-const roboto = Roboto({
+const jost = Jost({
     weight: ["300", "400", "500", "700"],
     subsets: ["latin"],
     display: "swap",
@@ -23,7 +23,7 @@ const theme = createTheme({
         },
     },
     typography: {
-        fontFamily: roboto.style.fontFamily,
+        fontFamily: jost.style.fontFamily,
     },
     components: {
         MuiAlert: {
@@ -63,6 +63,20 @@ const theme = createTheme({
                     color: "white",
                     "& > *": {
                         color: "white",
+                    },
+                },
+            },
+        },
+        MuiLink: {
+            styleOverrides: {
+                root: {
+                    "& > *": {
+                        color: "grey",
+                    },
+                    ":hover": {
+                        "& > *": {
+                            color: "#FF5733",
+                        },
                     },
                 },
             },

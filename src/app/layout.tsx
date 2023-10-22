@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography"
 import PersonIcon from "@mui/icons-material/Person"
 import FlightIcon from "@mui/icons-material/Flight"
 import ThemeRegistry from "@/components/ThemeRegistry/ThemeRegistry"
-import { Button } from "@mui/material"
+import { Link } from "@mui/material"
 import { HEADER_HEIGHT } from "@/constants/layout"
 
 export const metadata = {
@@ -42,6 +42,9 @@ export default function RootLayout({
                             top: "0",
                             left: "0",
                             zIndex: 2000,
+                            "& > *": {
+                                marginRight: "30px",
+                            },
                         }}
                     >
                         <Typography
@@ -49,30 +52,36 @@ export default function RootLayout({
                             noWrap
                             component="div"
                             color="black"
+                            sx={{ marginLeft: "20px" }}
                         >
                             Dom Taylor
                         </Typography>
 
                         {LINKS.map((link) => {
                             return (
-                                <Button
+                                <Link
                                     key={link.href}
                                     href={link.href}
-                                    sx={{ marginX: "10px" }}
-                                    variant={"contained"}
+                                    sx={{
+                                        marginX: "10px",
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        textDecoration: "none",
+                                    }}
                                 >
                                     <>
                                         {link.icon}
                                         <Typography
                                             sx={{ paddingLeft: "3px" }}
-                                            variant="body1"
+                                            variant="h6"
                                             noWrap
                                             component="div"
                                         >
                                             {link.text}
                                         </Typography>
                                     </>
-                                </Button>
+                                </Link>
                             )
                         })}
                     </Box>
