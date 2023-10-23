@@ -1,8 +1,6 @@
 import * as React from "react"
-import Container from "@mui/material/Container"
-import Box from "@mui/material/Box"
 import { GetTripsResponse } from "../types/api/trips"
-import { IconButton } from "@mui/material"
+import { IconButton, Box } from "@mui/material"
 import { Add } from "@mui/icons-material"
 import { NewTripModal } from "@/components"
 import { TripPreview } from "@/components/travel/TripPreview"
@@ -29,7 +27,7 @@ export default function Travel() {
     }, [])
 
     return (
-        <Container>
+        <Box>
             <title>Dom Taylor | Travel</title>
 
             <Box
@@ -44,7 +42,7 @@ export default function Travel() {
                     <TripPreview
                         key={trip._id}
                         _id={trip._id}
-                        previewImage="https://rimage.gnst.jp/livejapan.com/public/article/detail/a/00/02/a0002779/img/basic/a0002779_main.jpg?20201225174832"
+                        images={trip.images}
                         name={trip.heading}
                         description={trip.description}
                         entryDate={new Date(trip.entryDate)}
@@ -66,6 +64,6 @@ export default function Travel() {
                 open={tripsModalOpen}
                 onClose={handleToggleTripsModal}
             />
-        </Container>
+        </Box>
     )
 }

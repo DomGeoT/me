@@ -3,6 +3,7 @@ export type TripShape = {
     heading: string
     description: string
     rawMarkdownContent: string
+    images: string[]
     longitude: number
     latitude: number
     entryDate: Date

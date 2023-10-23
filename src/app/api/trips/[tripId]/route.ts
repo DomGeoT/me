@@ -25,6 +25,7 @@ export async function GET(
         _id: _trip._id,
         heading: _trip.heading,
         rawMarkdownContent: _trip.rawMarkdownContent,
+        images: _trip.images,
         longitude: _trip.longitude,
         latitude: _trip.latitude,
         entryDate: new Date(_trip.entryDate),

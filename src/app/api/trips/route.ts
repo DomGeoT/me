@@ -13,6 +13,7 @@ export async function GET(request: Request) {
         heading: trip.heading,
         description: trip.description,
         rawMarkdownContent: trip.rawMarkdownContent,
+        images: trip.images,
         longitude: trip.longitude,
         latitude: trip.latitude,
         entryDate: new Date(trip.entryDate),
@@ -27,10 +28,23 @@ export async function POST(request: Request) {
 
     const trip = await request.json()
 
+    if (
+        !trip.heading ||
+        !trip.description ||
+        !trip.rawMarkdownContent ||
+        !trip.longitude ||
+        !trip.latitude ||
+        !trip.images ||
+        trip.images.length === 0
+    ) {
+        return NextResponse.json({}, { status: 400 })
+    }
+
     await db.collection("trips").insertOne({
         heading: trip.heading,
         description: trip.description,
         rawMarkdownContent: trip.rawMarkdownContent,
+        images: trip.images,
         longitude: trip.longitude,
         latitude: trip.latitude,
         entryDate: Date.now(),

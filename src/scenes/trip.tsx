@@ -1,8 +1,7 @@
 "use client"
 import * as React from "react"
-import Container from "@mui/material/Container"
 import { GetTripResponse } from "../types/api/trips"
-import { Button, CircularProgress, Typography } from "@mui/material"
+import { Box, Button, CircularProgress, Typography } from "@mui/material"
 import { useRouter } from "next/navigation"
 import Marked from "marked-react"
 
@@ -45,9 +44,35 @@ export default function Travel({ tripId }: Props) {
     }
 
     return (
-        <Container>
-            <Marked>{trip.rawMarkdownContent}</Marked>
-            <Button onClick={handleDeleteTrip}>Delete</Button>
-        </Container>
+        <Box style={{ position: "relative" }}>
+            {trip.images?.length > 0 && (
+                <img
+                    style={{
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        minHeight: "70vh",
+                        objectFit: "contain", // This property will maintain the aspect ratio
+                    }}
+                    src={trip.images[0]}
+                />
+            )}
+            <Box
+                sx={{
+                    position: "absolute",
+                    width: "100%",
+                    top: trip.images?.length > 0 ? "70vh" : undefined,
+                    zIndex: 1, // Put it above the image
+                    backgroundColor: "background.paper",
+                    marginBottom: "200px",
+                    padding: "30px",
+                    borderRadius: "10px",
+                }}
+            >
+                <Marked>{trip.rawMarkdownContent}</Marked>
+                <Button onClick={handleDeleteTrip}>Delete</Button>
+            </Box>
+        </Box>
     )
 }

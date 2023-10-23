@@ -7,7 +7,7 @@ type Props = Readonly<{
     _id: string
     name: string
     description: string
-    previewImage: string
+    images: string[]
     entryDate: Date
 }>
 
@@ -15,13 +15,15 @@ export function TripPreview({
     _id,
     name,
     description,
-    previewImage,
+    images,
     entryDate,
 }: Props) {
     return (
         <Card>
             <CardActionArea href={`/travel/${_id}`}>
-                <CardMedia component="img" height="140" image={previewImage} />
+                {images && images[0] && (
+                    <CardMedia component="img" height="200" image={images[0]} />
+                )}
                 <CardContent>
                     <Box
                         sx={{
