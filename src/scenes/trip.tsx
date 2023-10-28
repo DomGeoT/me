@@ -1,9 +1,10 @@
 "use client"
 import * as React from "react"
 import { GetTripResponse } from "../types/api/trips"
-import { Box, Button, CircularProgress, Typography } from "@mui/material"
+import { Box, Button, CircularProgress, Paper, Typography } from "@mui/material"
 import { useRouter } from "next/navigation"
 import Marked from "marked-react"
+import { HEADER_HEIGHT } from "@/constants/layout"
 
 type Props = Readonly<{ tripId: string }>
 
@@ -37,28 +38,36 @@ export default function Travel({ tripId }: Props) {
     }, [])
 
     if (loading) {
-        return <CircularProgress />
+        return (
+            <CircularProgress
+                sx={{
+                    position: "fixed",
+                    top: "50%",
+                    right: "50%",
+                    transform: "translate(-50%, -50%)",
+                }}
+            />
+        )
     }
     if (!trip) {
         return <Typography>Sorry we could not find the trip...</Typography>
     }
 
     return (
-        <Box style={{ position: "relative" }}>
+        <Box sx={{ position: "relative" }}>
             {trip.images?.length > 0 && (
                 <img
                     style={{
                         position: "fixed",
-                        top: 0,
+                        top: HEADER_HEIGHT,
                         left: 0,
-                        width: "100%",
-                        minHeight: "70vh",
-                        objectFit: "contain", // This property will maintain the aspect ratio
+                        width: "100vw",
+                        minHeight: `calc(100vh - ${HEADER_HEIGHT}px)`,
                     }}
                     src={trip.images[0]}
                 />
             )}
-            <Box
+            <Paper
                 sx={{
                     position: "absolute",
                     width: "100%",
@@ -67,12 +76,13 @@ export default function Travel({ tripId }: Props) {
                     backgroundColor: "background.paper",
                     marginBottom: "200px",
                     padding: "30px",
-                    borderRadius: "10px",
+                    border: "1px solid",
+                    borderRadius: "0px",
                 }}
             >
                 <Marked>{trip.rawMarkdownContent}</Marked>
                 <Button onClick={handleDeleteTrip}>Delete</Button>
-            </Box>
+            </Paper>
         </Box>
     )
 }

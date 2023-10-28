@@ -1,20 +1,17 @@
+"use client"
 import * as React from "react"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import PersonIcon from "@mui/icons-material/Person"
 import FlightIcon from "@mui/icons-material/Flight"
 import ThemeRegistry from "@/components/ThemeRegistry/ThemeRegistry"
-import { Link } from "@mui/material"
+import { Link, useMediaQuery } from "@mui/material"
 import { HEADER_HEIGHT } from "@/constants/layout"
-
-export const metadata = {
-    title: "Next.js App Router + Material UI v5",
-    description: "Next.js App Router + Material UI v5",
-}
+import { useTheme } from "@mui/material/styles"
 
 const LINKS = [
-    { text: "About", href: "/about", icon: <PersonIcon /> },
-    { text: "Travel", href: "/travel", icon: <FlightIcon /> },
+    { text: "ABOUT", href: "/about", icon: <PersonIcon /> },
+    { text: "TRAVEL", href: "/travel", icon: <FlightIcon /> },
 ]
 
 export default function RootLayout({
@@ -22,6 +19,9 @@ export default function RootLayout({
 }: {
     children: React.ReactNode
 }) {
+    const theme = useTheme()
+    const smallScreen = useMediaQuery(theme.breakpoints.down("sm"))
+
     return (
         <html lang="en">
             <body>
@@ -32,58 +32,96 @@ export default function RootLayout({
                             display: "flex",
                             flexDirection: "row",
                             width: "100vw",
-                            height: `calc(${HEADER_HEIGHT} - 10)`,
+                            height: `calc(${HEADER_HEIGHT}px - 10px)`,
                             padding: "10px",
                             alignItems: "center",
-                            borderBottom: "2px solid",
                             backgroundColor: "background.default",
                             borderColor: "background.paper",
                             position: "fixed",
                             top: "0",
                             left: "0",
                             zIndex: 2000,
-                            "& > *": {
-                                marginRight: "30px",
-                            },
                         }}
                     >
                         <Typography
-                            variant="h6"
+                            variant="h4"
                             noWrap
                             component="div"
                             color="black"
-                            sx={{ marginLeft: "20px" }}
+                            sx={{
+                                position: "absolute",
+                                left: "50%",
+                                margin: "5px",
+                                transform: "translate(-50%)",
+                                backgroundColor: "black",
+                                color: "white",
+                                paddingX: "10px",
+                            }}
                         >
-                            Dom Taylor
+                            DOM TAYLOR
                         </Typography>
 
-                        {LINKS.map((link) => {
-                            return (
-                                <Link
-                                    key={link.href}
-                                    href={link.href}
-                                    sx={{
-                                        marginX: "10px",
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        alignItems: "center",
-                                        textDecoration: "none",
-                                    }}
-                                >
-                                    <>
-                                        {link.icon}
-                                        <Typography
-                                            sx={{ paddingLeft: "3px" }}
-                                            variant="h6"
-                                            noWrap
-                                            component="div"
-                                        >
-                                            {link.text}
-                                        </Typography>
-                                    </>
-                                </Link>
-                            )
-                        })}
+                        <Box
+                            sx={{
+                                position: "absolute",
+                                display: "flex",
+                                flexDirection: "row",
+                                right: "10px",
+                            }}
+                        >
+                            {LINKS.map((link) => {
+                                return (
+                                    <Link
+                                        key={link.href}
+                                        href={link.href}
+                                        sx={{
+                                            position: "relative",
+                                            marginX: "10px",
+                                            display: "flex",
+                                            flexDirection: "row",
+                                            alignItems: "center",
+                                            textDecoration: "none",
+                                            paddingX: "12px",
+                                            ":hover": {
+                                                "& > div": {
+                                                    width: "0%", // Squish the background to the left on hover
+                                                },
+                                            },
+                                        }}
+                                    >
+                                        <>
+                                            <Box
+                                                sx={{
+                                                    position: "absolute",
+                                                    top: 0,
+                                                    left: 0,
+                                                    width: "100%",
+                                                    height: "100%",
+                                                    backgroundColor: "black",
+                                                    transition:
+                                                        "width 0.3s ease-in-out", // Add a transition for smooth animation
+                                                }}
+                                            ></Box>
+                                            {smallScreen && link.icon}
+                                            {!smallScreen && (
+                                                <Typography
+                                                    sx={{
+                                                        paddingLeft: "3px",
+                                                        backgroundColor:
+                                                            "transparent",
+                                                    }}
+                                                    variant="h6"
+                                                    noWrap
+                                                    component="div"
+                                                >
+                                                    {link.text}
+                                                </Typography>
+                                            )}
+                                        </>
+                                    </Link>
+                                )
+                            })}
+                        </Box>
                     </Box>
 
                     <Box

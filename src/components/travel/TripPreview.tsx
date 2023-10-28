@@ -19,7 +19,7 @@ export function TripPreview({
     entryDate,
 }: Props) {
     return (
-        <Card>
+        <Card sx={{ borderRadius: "0px", border: "1px solid" }}>
             <CardActionArea href={`/travel/${_id}`}>
                 {images && images[0] && (
                     <CardMedia component="img" height="200" image={images[0]} />
@@ -32,7 +32,12 @@ export function TripPreview({
                             alignItems: "center",
                         }}
                     >
-                        <Typography variant="h5">{name}</Typography>
+                        <Typography
+                            variant="h5"
+                            sx={{ textTransform: "uppercase" }}
+                        >
+                            {name}
+                        </Typography>
                         <Typography
                             variant="caption"
                             sx={{ marginLeft: "auto" }}
