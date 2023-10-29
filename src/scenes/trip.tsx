@@ -84,37 +84,39 @@ export default function Travel({ tripId }: Props) {
                         src={trip.images[0]}
                         onClick={handleToggleHideLabels}
                     />
-                    {!hideLabels && (
-                        <Typography
-                            variant={smallScreen ? "h4" : "h2"}
-                            sx={{
-                                position: "absolute",
-                                top: theme.spacing(2),
-                                left: theme.spacing(2),
-                                paddingLeft: "10px",
-                                paddingRight: "10px",
-                            }}
-                        >
-                            {trip.heading}
-                        </Typography>
-                    )}
+                    <Typography
+                        variant={smallScreen ? "h4" : "h2"}
+                        sx={{
+                            position: "absolute",
+                            top: theme.spacing(2),
+                            left: hideLabels ? "-100vw" : theme.spacing(2),
+                            paddingLeft: "10px",
+                            paddingRight: "10px",
+                            overflow: "clip",
+                            textOverflow: "clip",
+                            transition: "left 0.3s ease-in-out",
+                        }}
+                    >
+                        {trip.heading}
+                    </Typography>
 
-                    {!hideLabels && (
-                        <Typography
-                            variant={"body1"}
-                            sx={{
-                                position: "absolute",
-                                bottom: theme.spacing(2),
-                                left: theme.spacing(2),
-                                right: theme.spacing(2),
-                                padding: "10px",
-                                backgroundColor: "background.paper",
-                                maxWidth: "100%",
-                            }}
-                        >
-                            {trip.description}
-                        </Typography>
-                    )}
+                    <Typography
+                        variant={"body1"}
+                        sx={{
+                            position: "absolute",
+                            bottom: theme.spacing(2),
+                            right: theme.spacing(2),
+                            padding: "10px",
+                            backgroundColor: "background.paper",
+                            maxWidth: "100%",
+
+                            left: hideLabels ? "-100vw" : theme.spacing(2),
+                            textOverflow: "clip",
+                            transition: "left 0.3s ease-in-out",
+                        }}
+                    >
+                        {trip.description}
+                    </Typography>
                 </Box>
             )}
 
