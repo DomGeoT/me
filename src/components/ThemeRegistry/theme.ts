@@ -7,21 +7,26 @@ const jost = Jost({
     display: "swap",
 })
 
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: "#FF5733",
-        },
-        secondary: {
-            main: "#E0C2FF",
-            light: "#F5EBFF",
-            contrastText: "#47008F",
-        },
-        background: {
-            paper: "#fAfAfA",
-            default: "white",
-        },
+const palette = {
+    primary: {
+        main: "#FF5733",
+        light: "#ffffff",
+        dark: "#000000",
     },
+    secondary: {
+        main: "#E0C2FF",
+        light: "#000000",
+        dark: "#ffffff",
+        contrastText: "#47008F",
+    },
+    background: {
+        paper: "#fAfAfA",
+        default: "#ffffff",
+    },
+}
+
+const theme = createTheme({
+    palette,
     typography: {
         fontFamily: jost.style.fontFamily,
     },
@@ -30,7 +35,7 @@ const theme = createTheme({
             styleOverrides: {
                 root: ({ ownerState }) => ({
                     ...(ownerState.severity === "info" && {
-                        backgroundColor: "#60a5fa",
+                        backgroundColor: "secondary.contrastText",
                     }),
                 }),
             },
@@ -41,9 +46,9 @@ const theme = createTheme({
                     props: { variant: "contained" },
                     style: {
                         backgroundColor: "theme.pallete.primary.main",
-                        color: "white",
+                        color: "background.default",
                         "& > *": {
-                            color: "white",
+                            color: "background.default",
                         },
                     },
                 },
@@ -59,10 +64,10 @@ const theme = createTheme({
         MuiIconButton: {
             styleOverrides: {
                 root: {
-                    backgroundColor: "#FF5733",
-                    color: "white",
+                    backgroundColor: "primary.main",
+                    color: "background.default",
                     "& > *": {
-                        color: "white",
+                        color: "background.default",
                     },
                 },
             },
@@ -75,9 +80,54 @@ const theme = createTheme({
                     },
                     ":hover": {
                         "& > *": {
-                            color: "#FF5733",
+                            color: "primary.main",
                         },
                     },
+                },
+            },
+        },
+        MuiTypography: {
+            variants: [
+                {
+                    props: { variant: "h1" },
+                    style: {
+                        backgroundColor: palette.primary.dark,
+                        color: palette.primary.light,
+                    },
+                },
+                {
+                    props: { variant: "h2" },
+                    style: {
+                        backgroundColor: palette.primary.dark,
+                        color: palette.primary.light,
+                    },
+                },
+                {
+                    props: { variant: "h3" },
+                    style: {
+                        backgroundColor: palette.primary.dark,
+                        color: palette.primary.light,
+                    },
+                },
+                {
+                    props: { variant: "h4" },
+                    style: {
+                        backgroundColor: palette.primary.dark,
+                        color: palette.primary.light,
+                    },
+                },
+                {
+                    props: { variant: "body2" },
+                    style: {
+                        backgroundColor: palette.primary.dark,
+                        color: palette.primary.light,
+                    },
+                },
+            ],
+            styleOverrides: {
+                root: {
+                    backgroundColor: "transparent",
+                    color: palette.primary.dark,
                 },
             },
         },

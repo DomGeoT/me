@@ -8,6 +8,7 @@ import ThemeRegistry from "@/components/ThemeRegistry/ThemeRegistry"
 import { Link, useMediaQuery } from "@mui/material"
 import { HEADER_HEIGHT } from "@/constants/layout"
 import { useTheme } from "@mui/material/styles"
+import { InvertingText } from "@/components/maximalism"
 
 const LINKS = [
     { text: "ABOUT", href: "/about", icon: <PersonIcon /> },
@@ -47,14 +48,11 @@ export default function RootLayout({
                             variant="h4"
                             noWrap
                             component="div"
-                            color="black"
                             sx={{
                                 position: "absolute",
                                 left: "50%",
                                 margin: "5px",
                                 transform: "translate(-50%)",
-                                backgroundColor: "black",
-                                color: "white",
                                 paddingX: "10px",
                             }}
                         >
@@ -72,50 +70,19 @@ export default function RootLayout({
                             {LINKS.map((link) => {
                                 return (
                                     <Link
+                                        sx={{
+                                            textDecoration: "none",
+                                            marginX: theme.spacing(1),
+                                        }}
                                         key={link.href}
                                         href={link.href}
-                                        sx={{
-                                            position: "relative",
-                                            marginX: "10px",
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            alignItems: "center",
-                                            textDecoration: "none",
-                                            paddingX: "12px",
-                                            ":hover": {
-                                                "& > div": {
-                                                    width: "0%", // Squish the background to the left on hover
-                                                },
-                                            },
-                                        }}
                                     >
                                         <>
-                                            <Box
-                                                sx={{
-                                                    position: "absolute",
-                                                    top: 0,
-                                                    left: 0,
-                                                    width: "100%",
-                                                    height: "100%",
-                                                    backgroundColor: "black",
-                                                    transition:
-                                                        "width 0.3s ease-in-out", // Add a transition for smooth animation
-                                                }}
-                                            ></Box>
                                             {smallScreen && link.icon}
                                             {!smallScreen && (
-                                                <Typography
-                                                    sx={{
-                                                        paddingLeft: "3px",
-                                                        backgroundColor:
-                                                            "transparent",
-                                                    }}
-                                                    variant="h6"
-                                                    noWrap
-                                                    component="div"
-                                                >
+                                                <InvertingText>
                                                     {link.text}
-                                                </Typography>
+                                                </InvertingText>
                                             )}
                                         </>
                                     </Link>

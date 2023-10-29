@@ -38,16 +38,13 @@ export function TripPreview({
                         >
                             {name}
                         </Typography>
-                        <Typography
-                            variant="caption"
-                            sx={{ marginLeft: "auto" }}
-                        >
+                        <Typography variant="body2" sx={{ marginLeft: "auto" }}>
                             {entryDate?.toLocaleDateString()}
                         </Typography>
                     </Box>
 
                     <Typography
-                        variant="body2"
+                        variant="body1"
                         sx={{ maxHeight: "100px", wordWrap: "break-word" }}
                     >
                         {description}
