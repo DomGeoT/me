@@ -34,7 +34,6 @@ export default function RootLayout({
                             flexDirection: "row",
                             width: "100vw",
                             height: `calc(${HEADER_HEIGHT}px - 10px)`,
-                            padding: "10px",
                             alignItems: "center",
                             backgroundColor: "background.default",
                             borderColor: "background.paper",
@@ -97,8 +96,7 @@ export default function RootLayout({
                             flexGrow: 1,
                             bgcolor: "background.default",
                             mt: ["48px", "56px", "64px"],
-                            p: 3,
-                            height: `calc(100vh - ${HEADER_HEIGHT} - 6)`,
+                            height: `calc(100vh - ${HEADER_HEIGHT}px)`,
                             position: "relative",
                         }}
                     >

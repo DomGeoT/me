@@ -22,8 +22,6 @@ export function NewTripModal({ open, onClose }: Props) {
     const [heading, setHeading] = React.useState<string>("")
     const [description, setDescription] = React.useState<string>("")
     const [rawMarkdown, setRawMarkdown] = React.useState<string>("")
-    const [rawMarkdownWithHeading, setRawMarkdownWithHeading] =
-        React.useState<string>("")
     const [longitude, setLongitude] = React.useState<number>()
     const [latitude, setLatitude] = React.useState<number>()
     const [images, setImages] = React.useState<string[]>([])
@@ -35,7 +33,7 @@ export function NewTripModal({ open, onClose }: Props) {
         (event: React.ChangeEvent<HTMLInputElement>) => {
             setHeading(event.target.value)
         },
-        []
+        [setHeading]
     )
     const handleDescriptionChange = React.useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,21 +42,13 @@ export function NewTripModal({ open, onClose }: Props) {
             }
             setDescription(event.target.value)
         },
-        []
+        [setDescription]
     )
     const handleRawMarkdownChange = React.useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
             setRawMarkdown(event.target.value)
         },
-        []
-    )
-
-    React.useEffect(
-        () =>
-            setRawMarkdownWithHeading(
-                (heading ? `# ${heading}\n\n` : "") + rawMarkdown
-            ),
-        [heading, rawMarkdown]
+        [setRawMarkdown]
     )
 
     const handleCreateTrip = React.useCallback(async () => {
@@ -72,7 +62,7 @@ export function NewTripModal({ open, onClose }: Props) {
         const body: PostTripRequest = {
             heading,
             description,
-            rawMarkdownContent: rawMarkdownWithHeading,
+            rawMarkdownContent: rawMarkdown,
             images,
             longitude,
             latitude,
@@ -88,15 +78,7 @@ export function NewTripModal({ open, onClose }: Props) {
             return
         }
         onClose()
-    }, [
-        longitude,
-        latitude,
-        rawMarkdown,
-        images,
-        heading,
-        description,
-        rawMarkdownWithHeading,
-    ])
+    }, [longitude, latitude, rawMarkdown, images, heading, description])
 
     const handleFileUploadChange = React.useCallback(
         async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -226,7 +208,7 @@ export function NewTripModal({ open, onClose }: Props) {
                         </Box>
                         <Box sx={{ flex: "1" }}>
                             <FormLabel>Preview</FormLabel>
-                            <Marked>{rawMarkdownWithHeading}</Marked>
+                            <Marked>{rawMarkdown}</Marked>
                         </Box>
                     </Box>
 

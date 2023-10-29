@@ -1,6 +1,5 @@
 "use client"
 import * as React from "react"
-import Container from "@mui/material/Container"
 import Trip from "@/scenes/trip"
 import { useParams } from "next/navigation"
 
@@ -9,9 +8,9 @@ export default function TripPage() {
     const tripId = params["tripId"] as string
 
     return (
-        <Container>
+        <>
             <title>Dom Taylor | Trip</title>
             <Trip tripId={tripId} />
-        </Container>
+        </>
     )
 }

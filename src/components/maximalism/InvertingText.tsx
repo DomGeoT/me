@@ -36,24 +36,28 @@ const TextWrapper2 = styled(Box)(() => ({
     },
 }))
 
-type Props = Readonly<{ children: React.ReactNode }>
+type Props = Readonly<{
+    children: React.ReactNode
+    variant?: "h4" | "h5" | "h6"
+}>
 
-export function InvertingText({ children }: Props) {
+export function InvertingText({ children, variant = "h5" }: Props) {
     return (
         <InvertingBox>
             <TextWrapper1>
                 <Typography
-                    variant="h5"
+                    variant={variant}
                     sx={{
                         width: "100%",
                         backgroundColor: "white",
                         color: "black",
+                        paddingLeft: "0px",
+                        paddingRight: "0px",
                     }}
                     noWrap
                     textOverflow="clip"
                 >
-                    {" "}
-                    {children}{" "}
+                    {children}
                 </Typography>
             </TextWrapper1>
             <TextWrapper2>
@@ -64,13 +68,14 @@ export function InvertingText({ children }: Props) {
                         backgroundColor: "black",
                         color: "white",
                         transition: "width 0.3s",
+                        paddingLeft: "0px",
+                        paddingRight: "0px",
                     }}
-                    variant="h5"
+                    variant={variant}
                     noWrap
                     textOverflow="clip"
                 >
-                    {" "}
-                    {children}{" "}
+                    {children}
                 </Typography>
             </TextWrapper2>
         </InvertingBox>

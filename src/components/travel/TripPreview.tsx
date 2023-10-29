@@ -2,6 +2,7 @@ import * as React from "react"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import { Card, CardActionArea, CardContent, CardMedia } from "@mui/material"
+import { useTheme } from "@mui/material/styles"
 
 type Props = Readonly<{
     _id: string
@@ -18,9 +19,13 @@ export function TripPreview({
     images,
     entryDate,
 }: Props) {
+    const theme = useTheme()
     return (
         <Card sx={{ borderRadius: "0px", border: "1px solid" }}>
-            <CardActionArea href={`/travel/${_id}`}>
+            <CardActionArea
+                href={`/travel/${_id}`}
+                sx={{ height: "100%", paddingBottom: theme.spacing(2) }}
+            >
                 {images && images[0] && (
                     <CardMedia component="img" height="200" image={images[0]} />
                 )}

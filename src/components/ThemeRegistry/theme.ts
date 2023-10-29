@@ -56,7 +56,7 @@ const theme = createTheme({
             styleOverrides: {
                 root: {
                     textTransform: "none",
-                    borderRadius: "200px",
+                    borderRadius: "0px",
                     paddingX: "15px",
                 },
             },
@@ -128,6 +128,8 @@ const theme = createTheme({
                 root: {
                     backgroundColor: "transparent",
                     color: palette.primary.dark,
+                    paddingLeft: "4px",
+                    paddingRight: "4px",
                 },
             },
         },
