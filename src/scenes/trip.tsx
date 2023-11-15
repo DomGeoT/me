@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation"
 import Marked from "marked-react"
 import { HEADER_HEIGHT } from "@/constants/layout"
 import { InvertingText } from "@/components/maximalism"
+import { getPassword } from "@/utils"
 
 type Props = Readonly<{ tripId: string }>
 
@@ -28,7 +29,9 @@ export default function Travel({ tripId }: Props) {
     React.useEffect(() => {
         async function f() {
             setLoading(true)
-            const res = await fetch(`/api/trips/${tripId}`, { method: "GET" })
+            const res = await fetch(`/api/trips/${tripId}`, {
+                method: "GET",
+            })
             if (!res.ok) {
                 setLoading(false)
                 return
@@ -47,7 +50,12 @@ export default function Travel({ tripId }: Props) {
 
     const handleDeleteTrip = React.useCallback(async () => {
         setLoading(true)
-        const res = await fetch(`/api/trips/${tripId}`, { method: "DELETE" })
+        const res = await fetch(`/api/trips/${tripId}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: getPassword(),
+            },
+        })
         if (!res.ok) {
             setLoading(false)
             return
@@ -78,8 +86,9 @@ export default function Travel({ tripId }: Props) {
                     <img
                         style={{
                             width: "100%",
-                            maxHeight: `calc(100vh - ${HEADER_HEIGHT}px)`,
-                            objectFit: "cover",
+                            height: "100%",
+                            maxHeight: `calc(95vh - ${HEADER_HEIGHT}px)`,
+                            objectFit: hideLabels ? "contain" : "cover",
                         }}
                         src={trip.images[0]}
                         onClick={handleToggleHideLabels}

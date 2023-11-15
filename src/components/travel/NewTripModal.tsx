@@ -15,6 +15,7 @@ import Marked from "marked-react"
 import { Close as CloseIcon } from "@mui/icons-material"
 
 import { PostTripRequest } from "@/types/api/trips"
+import { getPassword } from "@/utils"
 
 type Props = Readonly<{ open: boolean; onClose: () => void }>
 
@@ -71,6 +72,9 @@ export function NewTripModal({ open, onClose }: Props) {
         const res = await fetch("/api/trips", {
             method: "POST",
             body: JSON.stringify(body),
+            headers: {
+                Authorization: getPassword(),
+            },
         })
         setLoading(false)
         if (!res.ok) {

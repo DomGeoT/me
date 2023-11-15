@@ -21,9 +21,10 @@ export function Modal({ open, onClose, children }: Props) {
                     bgcolor: "background.paper",
                     boxShadow: 24,
                     p: 4,
-                    borderRadius: "30px",
                     maxHeight: "80vh",
                     overflowX: "scroll",
+                    border: "1px solid",
+                    borderRadius: "0px",
                 }}
             >
                 {children}
