@@ -40,7 +40,7 @@ export async function POST(request: Request) {
         return NextResponse.json({}, { status: 400 })
     }
 
-    await db.collection("trips").insertOne({
+    const result = await db.collection("trips").insertOne({
         heading: trip.heading,
         description: trip.description,
         rawMarkdownContent: trip.rawMarkdownContent,
@@ -50,5 +50,5 @@ export async function POST(request: Request) {
         entryDate: Date.now(),
     })
 
-    return NextResponse.json({}, { status: 200 })
+    return NextResponse.json({ id: result.insertedId.id }, { status: 200 })
 }
