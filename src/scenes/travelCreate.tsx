@@ -135,7 +135,7 @@ export function TravelCreate() {
                             reader.readAsDataURL(webpBlob)
                         },
                         "image/webp",
-                        0.8
+                        1
                     )
                 }
             }

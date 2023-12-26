@@ -40,7 +40,7 @@ export default function Travel({ tripId }: Props) {
                 }
                 return state - 1
             }),
-        []
+        [trip]
     )
     const handleClickRightImageArrow = React.useCallback(
         () =>
@@ -53,7 +53,7 @@ export default function Travel({ tripId }: Props) {
                 }
                 return state + 1
             }),
-        []
+        [trip]
     )
 
     React.useEffect(() => {
@@ -164,7 +164,7 @@ export default function Travel({ tripId }: Props) {
                                 position: "fixed",
                                 top: "50%",
                                 left: theme.spacing(4),
-                                transform: "translate(-50%, -50%)",
+                                transform: "translate(0%, -50%)",
                             }}
                         >
                             <ArrowLeft />
@@ -178,7 +178,7 @@ export default function Travel({ tripId }: Props) {
                                 position: "fixed",
                                 top: "50%",
                                 right: theme.spacing(4),
-                                transform: "translate(-50%, -50%)",
+                                transform: "translate(0%, -50%)",
                             }}
                         >
                             <ArrowRight />
