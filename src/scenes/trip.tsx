@@ -5,6 +5,7 @@ import {
     Box,
     Button,
     CircularProgress,
+    IconButton,
     Link,
     Typography,
     useMediaQuery,
@@ -15,6 +16,7 @@ import Marked from "marked-react"
 import { HEADER_HEIGHT } from "@/constants/layout"
 import { InvertingText } from "@/components/maximalism"
 import { getPassword } from "@/utils"
+import { ArrowLeft, ArrowRight } from "@mui/icons-material"
 
 type Props = Readonly<{ tripId: string }>
 
@@ -25,6 +27,34 @@ export default function Travel({ tripId }: Props) {
     const [trip, setTrip] = React.useState<GetTripResponse["trip"]>()
     const [loading, setLoading] = React.useState(true)
     const [hideLabels, setHideLables] = React.useState(false)
+    const [currentImage, setCurrentImage] = React.useState(0)
+
+    const handleClickLeftImageArrow = React.useCallback(
+        () =>
+            setCurrentImage((state) => {
+                if (!trip) {
+                    return 0
+                }
+                if (state === 0) {
+                    return trip.images.length - 1
+                }
+                return state - 1
+            }),
+        []
+    )
+    const handleClickRightImageArrow = React.useCallback(
+        () =>
+            setCurrentImage((state) => {
+                if (!trip) {
+                    return 0
+                }
+                if (state === trip.images.length - 1) {
+                    return 0
+                }
+                return state + 1
+            }),
+        []
+    )
 
     React.useEffect(() => {
         async function f() {
@@ -90,7 +120,7 @@ export default function Travel({ tripId }: Props) {
                             maxHeight: `calc(95vh - ${HEADER_HEIGHT}px)`,
                             objectFit: hideLabels ? "contain" : "cover",
                         }}
-                        src={trip.images[0]}
+                        src={trip.images[currentImage]}
                         onClick={handleToggleHideLabels}
                     />
                     <Typography
@@ -126,6 +156,34 @@ export default function Travel({ tripId }: Props) {
                     >
                         {trip.description}
                     </Typography>
+
+                    {trip.images.length > 1 && (
+                        <IconButton
+                            onClick={handleClickLeftImageArrow}
+                            sx={{
+                                position: "fixed",
+                                top: "50%",
+                                left: theme.spacing(4),
+                                transform: "translate(-50%, -50%)",
+                            }}
+                        >
+                            <ArrowLeft />
+                        </IconButton>
+                    )}
+
+                    {trip.images.length > 1 && (
+                        <IconButton
+                            onClick={handleClickRightImageArrow}
+                            sx={{
+                                position: "fixed",
+                                top: "50%",
+                                right: theme.spacing(4),
+                                transform: "translate(-50%, -50%)",
+                            }}
+                        >
+                            <ArrowRight />
+                        </IconButton>
+                    )}
                 </Box>
             )}
 
