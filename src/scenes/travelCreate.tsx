@@ -14,9 +14,22 @@ import Marked from "marked-react"
 
 import { Close as CloseIcon } from "@mui/icons-material"
 
-import { PostTripRequest } from "@/types/api/trips"
 import { getPassword } from "@/utils"
 import { useRouter } from "next/navigation"
+import { Modal } from "@/components"
+
+async function fileToBlob(file: File): Promise<Blob> {
+    return new Promise((resolve) => {
+        const reader = new FileReader()
+
+        reader.onloadend = () => {
+            const blob = new Blob([reader.result as ArrayBuffer])
+            resolve(blob)
+        }
+
+        reader.readAsArrayBuffer(file)
+    })
+}
 
 export function TravelCreate() {
     const router = useRouter()
@@ -27,7 +40,7 @@ export function TravelCreate() {
     const [rawMarkdown, setRawMarkdown] = React.useState<string>("")
     const [longitude, setLongitude] = React.useState<number>()
     const [latitude, setLatitude] = React.useState<number>()
-    const [images, setImages] = React.useState<string[]>([])
+    const [images, setImages] = React.useState<Blob[]>([])
 
     const [loading, setLoading] = React.useState(false)
     const [error, setError] = React.useState(false)
@@ -62,18 +75,27 @@ export function TravelCreate() {
             setError(true)
             return
         }
-        const body: PostTripRequest = {
+        const body = {
             heading,
             description,
             rawMarkdownContent: rawMarkdown,
-            images,
-            longitude,
-            latitude,
+            longitude: `${longitude}`,
+            latitude: `${latitude}`,
+        }
+
+        const data = new FormData()
+        const imageData: [string, Blob][] = images.map((image) => [
+            "image",
+            image,
+        ])
+
+        for (const [key, value] of [...Object.entries(body), ...imageData]) {
+            data.append(key, value)
         }
 
         const res = await fetch("/api/trips", {
             method: "POST",
-            body: JSON.stringify(body),
+            body: data,
             headers: {
                 Authorization: getPassword(),
             },
@@ -84,7 +106,7 @@ export function TravelCreate() {
             return
         }
 
-        const id = (await res.json()) as { id: string }
+        const { id } = (await res.json()) as { id: string }
 
         router.replace(`/travel/${id}`)
     }, [longitude, latitude, rawMarkdown, images, heading, description])
@@ -96,55 +118,17 @@ export function TravelCreate() {
                 return
             }
 
-            // Create an HTMLImageElement to load the uploaded image
-            const image = new Image()
-            image.src = URL.createObjectURL(file)
+            const blob = await fileToBlob(file)
 
-            // When the image has loaded, convert it to WebP format
-            image.onload = () => {
-                const canvas = document.createElement("canvas")
-                canvas.width = image.width
-                canvas.height = image.height
-
-                const ctx = canvas.getContext("2d")
-                if (ctx) {
-                    ctx.drawImage(image, 0, 0, image.width, image.height)
-
-                    // Convert the image to WebP format with quality (0.8 is a good value, adjust as needed)
-                    canvas.toBlob(
-                        (webpBlob) => {
-                            if (!webpBlob) {
-                                return
-                            }
-                            const reader = new FileReader()
-                            reader.onload = (e) => {
-                                const base64String = e.target?.result
-                                if (
-                                    !base64String ||
-                                    typeof base64String !== "string"
-                                ) {
-                                    return
-                                }
-                                setImages((state) => {
-                                    if (state.includes(base64String)) {
-                                        return state
-                                    }
-                                    return [...state, base64String]
-                                })
-                            }
-                            reader.readAsDataURL(webpBlob)
-                        },
-                        "image/webp",
-                        1
-                    )
-                }
-            }
+            setImages((state) => {
+                return [...state, blob]
+            })
         },
         [setImages]
     )
 
     const handleDeleteImage = React.useCallback(
-        (image: string) => {
+        (image: Blob) => {
             if (loading) {
                 return
             }
@@ -166,6 +150,21 @@ export function TravelCreate() {
         )
     }, [])
 
+    const [passwordModalOpen, setPasswordModalOpen] = React.useState(false)
+    const handleTogglePasswordModal = React.useCallback(
+        () => setPasswordModalOpen((state) => !state),
+        []
+    )
+
+    const [passwordValue, setPasswordValue] = React.useState(getPassword())
+    const handlePasswordFieldChange = React.useCallback(
+        (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+            localStorage.setItem("password", event.target.value)
+            setPasswordValue(event.target.value)
+        },
+        []
+    )
+
     return (
         <Box
             sx={{
@@ -177,6 +176,9 @@ export function TravelCreate() {
             <Typography id="modal-modal-title" variant="h6" component="h2">
                 New Trip
             </Typography>
+            <Button sx={{ ml: "10px" }} onClick={handleTogglePasswordModal}>
+                Security
+            </Button>
             <FormControl>
                 <FormLabel>Heading</FormLabel>
                 <TextField
@@ -250,7 +252,7 @@ export function TravelCreate() {
                     >
                         {images.map((image) => (
                             <Paper
-                                key={image}
+                                key={image.name}
                                 sx={{
                                     padding: "2px",
                                     position: "relative",
@@ -288,7 +290,7 @@ export function TravelCreate() {
                                         height: "auto", // Maintain the aspect ratio
                                         transition: "transform 0.2s", // Add a transition for smooth hover effect
                                     }}
-                                    src={image}
+                                    src={URL.createObjectURL(image)}
                                     onClick={() => handleDeleteImage(image)}
                                 />
                             </Paper>
@@ -308,6 +310,16 @@ export function TravelCreate() {
                     and try again.
                 </Alert>
             )}
+            <Modal open={passwordModalOpen} onClose={handleTogglePasswordModal}>
+                <>
+                    <Typography variant="h4">Enter Password</Typography>
+                    <TextField
+                        sx={{ mt: theme.spacing(1) }}
+                        onChange={handlePasswordFieldChange}
+                        value={passwordValue}
+                    ></TextField>
+                </>
+            </Modal>
         </Box>
     )
 }

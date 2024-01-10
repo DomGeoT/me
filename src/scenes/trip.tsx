@@ -110,9 +110,17 @@ export default function Travel({ tripId }: Props) {
     }
 
     return (
-        <Box>
+        <Box
+            sx={{
+                display: "flex",
+                width: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+            }}
+        >
             {trip.images?.length > 0 && (
-                <Box sx={{ position: "relative" }}>
+                <Box sx={{ position: "relative", width: "100%" }}>
                     <img
                         style={{
                             width: "100%",
@@ -161,7 +169,7 @@ export default function Travel({ tripId }: Props) {
                         <IconButton
                             onClick={handleClickLeftImageArrow}
                             sx={{
-                                position: "fixed",
+                                position: "absolute",
                                 top: "50%",
                                 left: theme.spacing(4),
                                 transform: "translate(0%, -50%)",
@@ -175,7 +183,7 @@ export default function Travel({ tripId }: Props) {
                         <IconButton
                             onClick={handleClickRightImageArrow}
                             sx={{
-                                position: "fixed",
+                                position: "absolute",
                                 top: "50%",
                                 right: theme.spacing(4),
                                 transform: "translate(0%, -50%)",
@@ -191,8 +199,6 @@ export default function Travel({ tripId }: Props) {
                 sx={{
                     margin: theme.spacing(2),
                     maxWidth: smallScreen ? undefined : "800px",
-                    alignItems: "center",
-                    justifyContent: "center",
                 }}
             >
                 <Box

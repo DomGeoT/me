@@ -5,12 +5,10 @@ import Typography from "@mui/material/Typography"
 import PersonIcon from "@mui/icons-material/Person"
 import FlightIcon from "@mui/icons-material/Flight"
 import ThemeRegistry from "@/components/ThemeRegistry/ThemeRegistry"
-import { Button, Link, TextField, useMediaQuery } from "@mui/material"
+import { Link, useMediaQuery } from "@mui/material"
 import { HEADER_HEIGHT } from "@/constants/layout"
 import { useTheme } from "@mui/material/styles"
 import { InvertingText } from "@/components/maximalism"
-import { Modal } from "@/components"
-import { getPassword } from "@/utils"
 
 const LINKS = [
     { text: "ABOUT", href: "/about", icon: <PersonIcon /> },
@@ -24,21 +22,6 @@ export default function RootLayout({
 }) {
     const theme = useTheme()
     const smallScreen = useMediaQuery(theme.breakpoints.down("sm"))
-
-    const [passwordModalOpen, setPasswordModalOpen] = React.useState(false)
-    const handleTogglePasswordModal = React.useCallback(
-        () => setPasswordModalOpen((state) => !state),
-        []
-    )
-
-    const [passwordValue, setPasswordValue] = React.useState(getPassword())
-    const handlePasswordFieldChange = React.useCallback(
-        (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-            localStorage.setItem("password", event.target.value)
-            setPasswordValue(event.target.value)
-        },
-        []
-    )
 
     return (
         <html lang="en">
@@ -60,13 +43,6 @@ export default function RootLayout({
                             zIndex: 2000,
                         }}
                     >
-                        <Button
-                            sx={{ ml: "10px" }}
-                            onClick={handleTogglePasswordModal}
-                        >
-                            Security
-                        </Button>
-
                         <Typography
                             variant="h4"
                             noWrap
@@ -126,20 +102,6 @@ export default function RootLayout({
                     >
                         {children}
                     </Box>
-
-                    <Modal
-                        open={passwordModalOpen}
-                        onClose={handleTogglePasswordModal}
-                    >
-                        <>
-                            <Typography variant="h4">Enter Password</Typography>
-                            <TextField
-                                sx={{ mt: theme.spacing(1) }}
-                                onChange={handlePasswordFieldChange}
-                                value={passwordValue}
-                            ></TextField>
-                        </>
-                    </Modal>
                 </ThemeRegistry>
             </body>
         </html>

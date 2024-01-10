@@ -1,13 +1,10 @@
 import * as React from "react"
 import { GetTripsResponse } from "../types/api/trips"
-import { IconButton, Box } from "@mui/material"
-import { Add } from "@mui/icons-material"
-import { NewTripModal } from "@/components"
+import { Box } from "@mui/material"
 import { TripPreview } from "@/components/travel/TripPreview"
 
 export default function Travel() {
     const [trips, setTrips] = React.useState<GetTripsResponse["trips"]>([])
-    const [tripsModalOpen, setTripsModalOpen] = React.useState(false)
     React.useEffect(() => {
         async function f() {
             const res = await fetch("/api/trips", { method: "GET" })
@@ -20,10 +17,6 @@ export default function Travel() {
             )
         }
         void f()
-    }, [])
-
-    const handleToggleTripsModal = React.useCallback(() => {
-        setTripsModalOpen((state) => !state)
     }, [])
 
     return (
@@ -49,21 +42,6 @@ export default function Travel() {
                     />
                 ))}
             </Box>
-            <IconButton
-                onClick={handleToggleTripsModal}
-                disabled={tripsModalOpen}
-                sx={{
-                    position: "fixed",
-                    bottom: "32px",
-                    right: "32px",
-                }}
-            >
-                <Add />
-            </IconButton>
-            <NewTripModal
-                open={tripsModalOpen}
-                onClose={handleToggleTripsModal}
-            />
         </Box>
     )
 }
