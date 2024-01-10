@@ -1,9 +1,13 @@
 import * as React from "react"
 import { GetTripsResponse } from "../types/api/trips"
 import { Box } from "@mui/material"
-import { TripPreview } from "@/components/travel/TripPreview"
+import {
+    TripPreview,
+    TripPreviewSkeleton,
+} from "@/components/travel/TripPreview"
 
 export default function Travel() {
+    const [tripsFetched, setTripsFetched] = React.useState(false)
     const [trips, setTrips] = React.useState<GetTripsResponse["trips"]>([])
     React.useEffect(() => {
         async function f() {
@@ -15,6 +19,7 @@ export default function Travel() {
             setTrips(
                 body.trips.sort((tripA, tripB) => (tripA > tripB ? -1 : 1)) // order by entry date
             )
+            setTripsFetched(true)
         }
         void f()
     }, [])
@@ -31,6 +36,10 @@ export default function Travel() {
                     gap: "10px", // Adjust the gap size as needed
                 }}
             >
+                {!tripsFetched &&
+                    [...Array.from(Array(10).keys())].map((i) => (
+                        <TripPreviewSkeleton key={i} />
+                    ))}
                 {trips.map((trip) => (
                     <TripPreview
                         key={trip._id}
