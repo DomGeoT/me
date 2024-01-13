@@ -1,7 +1,8 @@
+"use client"
 import * as React from "react"
 import Container from "@mui/material/Container"
 import Box from "@mui/material/Box"
-import Typography from "@mui/material/Typography"
+import { About } from "@/scenes"
 
 export default function AboutPage() {
     return (
@@ -15,9 +16,7 @@ export default function AboutPage() {
                     alignItems: "center",
                 }}
             >
-                <Typography variant="body1" gutterBottom>
-                    About Page
-                </Typography>
+                <About />
             </Box>
         </Container>
     )
