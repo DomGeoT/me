@@ -2,26 +2,21 @@
 import * as React from "react"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
-import PersonIcon from "@mui/icons-material/Person"
-import FlightIcon from "@mui/icons-material/Flight"
+import Menu from "@mui/icons-material/Menu"
 import ThemeRegistry from "@/components/ThemeRegistry/ThemeRegistry"
-import { Link, useMediaQuery } from "@mui/material"
+import { Button } from "@mui/material"
 import { HEADER_HEIGHT } from "@/constants/layout"
-import { useTheme } from "@mui/material/styles"
-import { InvertingText } from "@/components/maximalism"
-
-const LINKS = [
-    { text: "ABOUT", href: "/about", icon: <PersonIcon /> },
-    { text: "TRAVEL", href: "/travel", icon: <FlightIcon /> },
-]
+import { MenuModal } from "@/components/MenuModal"
 
 export default function RootLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
-    const theme = useTheme()
-    const smallScreen = useMediaQuery(theme.breakpoints.down("sm"))
+    const [isMenuModalOpen, setIsMenuModalOpen] = React.useState(false)
+    const handleToggleMenuModal = React.useCallback(() => {
+        setIsMenuModalOpen((state) => !state)
+    }, [])
 
     return (
         <html lang="en">
@@ -66,27 +61,9 @@ export default function RootLayout({
                                 right: "10px",
                             }}
                         >
-                            {LINKS.map((link) => {
-                                return (
-                                    <Link
-                                        sx={{
-                                            textDecoration: "none",
-                                            marginX: theme.spacing(1),
-                                        }}
-                                        key={link.href}
-                                        href={link.href}
-                                    >
-                                        <>
-                                            {smallScreen && link.icon}
-                                            {!smallScreen && (
-                                                <InvertingText>
-                                                    {link.text}
-                                                </InvertingText>
-                                            )}
-                                        </>
-                                    </Link>
-                                )
-                            })}
+                            <Button onClick={handleToggleMenuModal}>
+                                <Menu />
+                            </Button>
                         </Box>
                     </Box>
 
@@ -102,6 +79,11 @@ export default function RootLayout({
                     >
                         {children}
                     </Box>
+
+                    <MenuModal
+                        open={isMenuModalOpen}
+                        onClose={handleToggleMenuModal}
+                    />
                 </ThemeRegistry>
             </body>
         </html>

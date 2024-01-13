@@ -6,9 +6,10 @@ type Props = Readonly<{
     open: boolean
     onClose: () => void
     children: React.ReactNode
+    sx: React.CSSProperties
 }>
 
-export function Modal({ open, onClose, children }: Props) {
+export function Modal({ open, onClose, children, sx }: Props) {
     return (
         <_Modal open={open} onClose={onClose}>
             <Card
@@ -25,6 +26,7 @@ export function Modal({ open, onClose, children }: Props) {
                     overflowX: "scroll",
                     border: "1px solid",
                     borderRadius: "0px",
+                    ...sx,
                 }}
             >
                 {children}
