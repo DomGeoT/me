@@ -6,7 +6,7 @@ type Props = Readonly<{
     open: boolean
     onClose: () => void
     children: React.ReactNode
-    sx: React.CSSProperties
+    sx?: React.CSSProperties
 }>
 
 export function Modal({ open, onClose, children, sx }: Props) {

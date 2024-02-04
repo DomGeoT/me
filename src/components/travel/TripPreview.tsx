@@ -8,7 +8,7 @@ import {
     CardMedia,
     Skeleton,
 } from "@mui/material"
-import { useTheme } from "@mui/material/styles"
+import { useTheme, styled } from "@mui/material/styles"
 
 type Props = Readonly<{
     _id: string
@@ -17,6 +17,10 @@ type Props = Readonly<{
     images: string[]
     entryDate: Date
 }>
+
+const PaddedSkeleton = styled(Skeleton)`
+    margin: 2px;
+`
 
 export function TripPreviewSkeleton() {
     const theme = useTheme()
@@ -42,13 +46,19 @@ export function TripPreviewSkeleton() {
                             variant="h5"
                             sx={{ textTransform: "uppercase", width: "50px" }}
                         >
-                            <Skeleton animation="wave" />
+                            <PaddedSkeleton
+                                animation="wave"
+                                variant="rectangular"
+                            />
                         </Typography>
                         <Typography
                             variant="body1"
                             sx={{ marginLeft: "auto", width: "40px" }}
                         >
-                            <Skeleton animation="wave" />
+                            <PaddedSkeleton
+                                animation="wave"
+                                variant="rectangular"
+                            />
                         </Typography>
                     </Box>
 
@@ -56,7 +66,10 @@ export function TripPreviewSkeleton() {
                         variant="body1"
                         sx={{ maxHeight: "100px", wordWrap: "break-word" }}
                     >
-                        <Skeleton animation="wave" />
+                        <PaddedSkeleton
+                            animation="wave"
+                            variant="rectangular"
+                        />
                     </Typography>
                 </CardContent>
             </CardActionArea>

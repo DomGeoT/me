@@ -199,6 +199,7 @@ export default function Travel({ tripId }: Props) {
                 sx={{
                     margin: theme.spacing(2),
                     maxWidth: smallScreen ? undefined : "800px",
+                    minWidth: "60vw",
                 }}
             >
                 <Box
