@@ -50,6 +50,7 @@ function ImageText({ image, text, reverse }: ImageTextProps) {
                 sx={{
                     width: smallScreen ? "100%" : "40%",
                     height: "100%",
+                    maxHeight: smallScreen ? undefined : "40vh",
                 }}
             >
                 <img src={image} style={{ width: "100%", height: "100%" }} />

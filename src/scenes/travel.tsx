@@ -1,6 +1,6 @@
 import * as React from "react"
 import { GetTripsResponse } from "../types/api/trips"
-import { Box } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import {
     TripPreview,
     TripPreviewSkeleton,
@@ -12,6 +12,7 @@ export default function Travel() {
     React.useEffect(() => {
         async function f() {
             const res = await fetch("/api/trips", { method: "GET" })
+            setTripsFetched(true)
             if (!res.ok) {
                 return
             }
@@ -19,7 +20,6 @@ export default function Travel() {
             setTrips(
                 body.trips.sort((tripA, tripB) => (tripA > tripB ? -1 : 1)) // order by entry date
             )
-            setTripsFetched(true)
         }
         void f()
     }, [])
@@ -51,6 +51,17 @@ export default function Travel() {
                     />
                 ))}
             </Box>
+            {tripsFetched && trips.length === 0 && (
+                <Box
+                    sx={{
+                        display: "flex",
+                        width: "100%",
+                        justifyContent: "center",
+                    }}
+                >
+                    <Typography>No trips found...</Typography>
+                </Box>
+            )}
         </Box>
     )
 }
