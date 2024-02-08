@@ -4,6 +4,7 @@ import crypto from "crypto"
 import clientPromise from "../../lib/mongodb"
 import { TripShape } from "@/types/collections/trips"
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3"
+import sharp from "sharp"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function GET(request: Request) {
@@ -50,10 +51,15 @@ export async function POST(request: Request) {
     for (const file of trip.getAll("image")) {
         const imageFile = file as File
 
+        const formattedImageFile = await sharp(await imageFile.arrayBuffer())
+            .resize(1920)
+            .webp({ quality: 80 })
+            .toBuffer()
+
         const id = crypto.randomBytes(24).toString("hex")
 
         const input = {
-            Body: Buffer.from(await imageFile.arrayBuffer()),
+            Body: formattedImageFile,
             Bucket: "domgeot-website-images",
             Key: id,
         }
