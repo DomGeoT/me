@@ -29,6 +29,12 @@ export default function Travel({ tripId }: Props) {
     const [hideLabels, setHideLables] = React.useState(false)
     const [currentImage, setCurrentImage] = React.useState(0)
 
+    const [password, setPassword] = React.useState<string>()
+
+    React.useEffect(() => {
+        setPassword(getPassword())
+    }, [])
+
     const handleClickLeftImageArrow = React.useCallback(
         () =>
             setCurrentImage((state) => {
@@ -83,7 +89,7 @@ export default function Travel({ tripId }: Props) {
         const res = await fetch(`/api/trips/${tripId}`, {
             method: "DELETE",
             headers: {
-                Authorization: getPassword(),
+                Authorization: password ?? "",
             },
         })
         if (!res.ok) {
@@ -218,16 +224,20 @@ export default function Travel({ tripId }: Props) {
                             {Number(trip.latitude).toFixed(2)}
                         </InvertingText>
                     </Link>
-                    <Button
-                        onClick={handleDeleteTrip}
-                        sx={{
-                            marginTop: smallScreen ? theme.spacing(1) : "auto",
-                            marginLeft: smallScreen ? undefined : "auto",
-                        }}
-                        variant="contained"
-                    >
-                        Delete
-                    </Button>
+                    {password && (
+                        <Button
+                            onClick={handleDeleteTrip}
+                            sx={{
+                                marginTop: smallScreen
+                                    ? theme.spacing(1)
+                                    : "auto",
+                                marginLeft: smallScreen ? undefined : "auto",
+                            }}
+                            variant="contained"
+                        >
+                            Delete
+                        </Button>
+                    )}
                 </Box>
 
                 <Marked>{trip.rawMarkdownContent}</Marked>
