@@ -23,7 +23,7 @@
         "next": "13.5.3",
         "react": "18.2.0",
         "react-dom": "18.2.0",
-        "sharp": "^0.33.2"
+        "sharp": "0.33.2"
     },
     "devDependencies": {
         "@types/node": "20.8.0",
