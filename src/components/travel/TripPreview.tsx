@@ -99,7 +99,7 @@ export function TripPreview({
                         sx={{
                             display: "flex",
                             flexDirection: "row",
-                            alignItems: "center",
+                            alignItems: "flex-start",
                         }}
                     >
                         <Typography
@@ -108,7 +108,14 @@ export function TripPreview({
                         >
                             {name}
                         </Typography>
-                        <Typography variant="body2" sx={{ marginLeft: "auto" }}>
+                        <Typography
+                            variant="body2"
+                            sx={{
+                                alignSelf: "flex-start",
+                                marginLeft: "auto",
+                                marginTop: "6px",
+                            }}
+                        >
                             {entryDate?.toLocaleDateString()}
                         </Typography>
                     </Box>

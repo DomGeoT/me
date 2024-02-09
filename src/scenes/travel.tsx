@@ -18,7 +18,9 @@ export default function Travel() {
             }
             const body = (await res.json()) as GetTripsResponse
             setTrips(
-                body.trips.sort((tripA, tripB) => (tripA > tripB ? -1 : 1)) // order by entry date
+                body.trips.sort((tripA, tripB) =>
+                    tripA.entryDate > tripB.entryDate ? -1 : 1
+                ) // order by entry date
             )
         }
         void f()
