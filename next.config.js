@@ -1,22 +1,28 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-  swcMinify: true,
-  modularizeImports: {
-    '@mui/icons-material': {
-      transform: '@mui/icons-material/{{member}}',
+    reactStrictMode: true,
+    swcMinify: true,
+    modularizeImports: {
+        "@mui/icons-material": {
+            transform: "@mui/icons-material/{{member}}",
+        },
     },
-  },
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'source.unsplash.com',
-        port: '',
-        pathname: '/random',
-      },
-    ],
-  },
-};
+    images: {
+        remotePatterns: [
+            {
+                protocol: "https",
+                hostname: "source.unsplash.com",
+                port: "",
+                pathname: "/random",
+            },
+            {
+                protocol: "https",
+                hostname: "domgeot-website-images.s3.eu-north-1.amazonaws.com",
+                port: "",
+                pathname: "/*",
+            },
+        ],
+    },
+}
 
-module.exports = nextConfig;
+module.exports = nextConfig

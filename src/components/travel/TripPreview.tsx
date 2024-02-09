@@ -9,6 +9,7 @@ import {
     Skeleton,
 } from "@mui/material"
 import { useTheme, styled } from "@mui/material/styles"
+import Image from "next/image"
 
 type Props = Readonly<{
     _id: string
@@ -92,7 +93,21 @@ export function TripPreview({
                 sx={{ height: "100%", paddingBottom: theme.spacing(2) }}
             >
                 {images && images[0] && (
-                    <CardMedia component="img" height="200" image={images[0]} />
+                    <CardMedia
+                        component="div" // Use a div for CardMedia as Next.js's Image component is not supported directly
+                        sx={{
+                            height: "200px", // Set the height to 200 pixels
+                            overflow: "hidden", // Hide any overflow
+                            position: "relative", // Positioning context for the image
+                        }}
+                    >
+                        <Image
+                            src={images[0]}
+                            alt={"Preview"}
+                            layout="fill" // Fill the parent container
+                            objectFit="cover" // Maintain aspect ratio and cover the container
+                        />
+                    </CardMedia>
                 )}
                 <CardContent>
                     <Box
@@ -119,7 +134,6 @@ export function TripPreview({
                             {entryDate?.toLocaleDateString()}
                         </Typography>
                     </Box>
-
                     <Typography
                         variant="body1"
                         sx={{ maxHeight: "100px", wordWrap: "break-word" }}
