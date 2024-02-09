@@ -17,6 +17,7 @@ import { HEADER_HEIGHT } from "@/constants/layout"
 import { InvertingText } from "@/components/maximalism"
 import { getPassword } from "@/utils"
 import { ArrowLeft, ArrowRight } from "@mui/icons-material"
+import { EditTripModal } from "@/components"
 
 type Props = Readonly<{ tripId: string }>
 
@@ -25,6 +26,7 @@ export default function Travel({ tripId }: Props) {
     const smallScreen = useMediaQuery(theme.breakpoints.down("sm"))
     const router = useRouter()
     const [trip, setTrip] = React.useState<GetTripResponse["trip"]>()
+    const [showEditTripModal, setShowEditTripModal] = React.useState(false)
     const [loading, setLoading] = React.useState(true)
     const [hideLabels, setHideLables] = React.useState(false)
     const [currentImage, setCurrentImage] = React.useState(0)
@@ -33,6 +35,10 @@ export default function Travel({ tripId }: Props) {
 
     React.useEffect(() => {
         setPassword(getPassword())
+    }, [])
+
+    const handleToggleEditTripModal = React.useCallback(() => {
+        setShowEditTripModal((state) => !state)
     }, [])
 
     const handleClickLeftImageArrow = React.useCallback(
@@ -97,7 +103,7 @@ export default function Travel({ tripId }: Props) {
             return
         }
         router.back()
-    }, [])
+    }, [password])
 
     if (loading) {
         return (
@@ -225,23 +231,51 @@ export default function Travel({ tripId }: Props) {
                         </InvertingText>
                     </Link>
                     {password && (
-                        <Button
-                            onClick={handleDeleteTrip}
-                            sx={{
-                                marginTop: smallScreen
-                                    ? theme.spacing(1)
-                                    : "auto",
-                                marginLeft: smallScreen ? undefined : "auto",
-                            }}
-                            variant="contained"
-                        >
-                            Delete
-                        </Button>
+                        <>
+                            <Button
+                                onClick={handleToggleEditTripModal}
+                                sx={{
+                                    marginTop: smallScreen
+                                        ? theme.spacing(1)
+                                        : "auto",
+                                    marginLeft: smallScreen
+                                        ? undefined
+                                        : "auto",
+                                }}
+                                variant="contained"
+                            >
+                                Edit
+                            </Button>
+                            <Button
+                                onClick={handleDeleteTrip}
+                                sx={{
+                                    marginTop: smallScreen
+                                        ? theme.spacing(1)
+                                        : "auto",
+                                    marginLeft: smallScreen
+                                        ? undefined
+                                        : "auto",
+                                }}
+                                variant="contained"
+                            >
+                                Delete
+                            </Button>
+                        </>
                     )}
                 </Box>
 
                 <Marked>{trip.rawMarkdownContent}</Marked>
             </Box>
+            <EditTripModal
+                open={showEditTripModal}
+                onClose={handleToggleEditTripModal}
+                values={{
+                    tripId,
+                    heading: trip.heading,
+                    description: trip.description,
+                    rawMarkdown: trip.rawMarkdownContent,
+                }}
+            ></EditTripModal>
         </Box>
     )
 }
