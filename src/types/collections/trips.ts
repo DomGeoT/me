@@ -6,5 +6,6 @@ export type TripShape = {
     images: string[]
     longitude: number
     latitude: number
+    privatePost?: boolean
     entryDate: Date
 }

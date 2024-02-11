@@ -5,13 +5,19 @@ import {
     TripPreview,
     TripPreviewSkeleton,
 } from "@/components/travel/TripPreview"
+import { getPassword } from "@/utils"
 
 export default function Travel() {
     const [tripsFetched, setTripsFetched] = React.useState(false)
     const [trips, setTrips] = React.useState<GetTripsResponse["trips"]>([])
     React.useEffect(() => {
         async function f() {
-            const res = await fetch("/api/trips", { method: "GET" })
+            const res = await fetch("/api/trips", {
+                method: "GET",
+                headers: {
+                    Authorization: getPassword(),
+                },
+            })
             setTripsFetched(true)
             if (!res.ok) {
                 return

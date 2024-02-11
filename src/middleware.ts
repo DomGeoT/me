@@ -1,14 +1,11 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
-
-const secret = process.env.WRITE_KEY
+import { doesRequestContainPassword } from "./utils"
 
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
     if (request.method != "GET") {
-        const requestHeaders = new Headers(request.headers)
-        const authHeader = requestHeaders.get("authorization")
-        if (authHeader !== secret) {
+        if (!doesRequestContainPassword(request)) {
             return NextResponse.json({}, { status: 401 })
         }
     }

@@ -1,31 +1,37 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import crypto from "crypto"
 
 import clientPromise from "../../lib/mongodb"
 import { TripShape } from "@/types/collections/trips"
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3"
 import sharp from "sharp"
+import { doesRequestContainPassword } from "@/utils"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
     const client = await clientPromise
     const db = client.db()
     const trips = await db.collection<TripShape>("trips").find({}).toArray()
-    const tripMapping = trips.map((trip) => ({
-        _id: trip._id,
-        heading: trip.heading,
-        description: trip.description,
-        rawMarkdownContent: trip.rawMarkdownContent,
-        images: trip.images,
-        longitude: trip.longitude,
-        latitude: trip.latitude,
-        entryDate: new Date(trip.entryDate),
-    }))
+
+    const showPrivatePosts = doesRequestContainPassword(request)
+
+    const tripMapping = trips
+        .filter((trip) => (showPrivatePosts ? true : !trip.privatePost))
+        .map((trip) => ({
+            _id: trip._id,
+            heading: trip.heading,
+            description: trip.description,
+            rawMarkdownContent: trip.rawMarkdownContent,
+            images: trip.images,
+            longitude: trip.longitude,
+            latitude: trip.latitude,
+            entryDate: new Date(trip.entryDate),
+        }))
 
     return NextResponse.json({ trips: tripMapping }, { status: 200 })
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
     const trip = await request.formData()
 
     if (
@@ -83,6 +89,7 @@ export async function POST(request: Request) {
         images: imageUrls,
         longitude: trip.get("longitude"),
         latitude: trip.get("latitude"),
+        privatePost: !!trip.get("privatePost"),
         entryDate: Date.now(),
     })
 

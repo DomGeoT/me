@@ -5,6 +5,7 @@ import {
     FormControl,
     FormLabel,
     Paper,
+    Switch,
     TextField,
     Typography,
 } from "@mui/material"
@@ -41,6 +42,7 @@ export function TravelCreate() {
     const [longitude, setLongitude] = React.useState<number>()
     const [latitude, setLatitude] = React.useState<number>()
     const [images, setImages] = React.useState<Blob[]>([])
+    const [privatePost, setPrivatePost] = React.useState(false)
 
     const [loading, setLoading] = React.useState(false)
     const [error, setError] = React.useState(false)
@@ -81,6 +83,7 @@ export function TravelCreate() {
             rawMarkdownContent: rawMarkdown,
             longitude: `${longitude}`,
             latitude: `${latitude}`,
+            privatePost: `${privatePost}`,
         }
 
         const data = new FormData()
@@ -137,6 +140,13 @@ export function TravelCreate() {
             })
         },
         [setImages]
+    )
+
+    const handlePrivatePostChanged = React.useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            setPrivatePost(event.target.checked)
+        },
+        []
     )
 
     React.useEffect(() => {
@@ -297,6 +307,13 @@ export function TravelCreate() {
                         ))}
                     </Box>
                 </Box>
+
+                <FormLabel>Private</FormLabel>
+                <Switch
+                    disabled={loading}
+                    onChange={handlePrivatePostChanged}
+                    checked={privatePost}
+                />
             </FormControl>
             <Box>
                 <Button onClick={handleCreateTrip} disabled={loading}>
