@@ -185,6 +185,8 @@ export default function Travel({ tripId }: Props) {
                                 top: "50%",
                                 left: theme.spacing(4),
                                 transform: "translate(0%, -50%)",
+                                padding: "1px",
+                                backgroundColor: theme.palette.background.paper,
                             }}
                         >
                             <ArrowLeft />
@@ -199,6 +201,8 @@ export default function Travel({ tripId }: Props) {
                                 top: "50%",
                                 right: theme.spacing(4),
                                 transform: "translate(0%, -50%)",
+                                padding: "1px",
+                                backgroundColor: theme.palette.background.paper,
                             }}
                         >
                             <ArrowRight />
