@@ -18,6 +18,7 @@ import { InvertingText } from "@/components/maximalism"
 import { getPassword } from "@/utils"
 import { ArrowLeft, ArrowRight } from "@mui/icons-material"
 import { EditTripModal } from "@/components"
+import Image from "next/image"
 
 type Props = Readonly<{ tripId: string }>
 
@@ -133,16 +134,25 @@ export default function Travel({ tripId }: Props) {
         >
             {trip.images?.length > 0 && (
                 <Box sx={{ position: "relative", width: "100%" }}>
-                    <img
-                        style={{
+                    <Box
+                        sx={{
+                            display: "flex",
+                            position: "relative",
                             width: "100%",
                             height: "100%",
                             maxHeight: `calc(95vh - ${HEADER_HEIGHT}px)`,
-                            objectFit: hideLabels ? "contain" : "cover",
+                            minHeight: "75vh",
                         }}
-                        src={trip.images[currentImage]}
                         onClick={handleToggleHideLabels}
-                    />
+                    >
+                        <Image
+                            src={trip.images[currentImage]}
+                            alt={""}
+                            fill={true}
+                            objectFit={hideLabels ? "contain" : "cover"}
+                        />
+                    </Box>
+
                     <Typography
                         variant={smallScreen ? "h4" : "h2"}
                         sx={{
