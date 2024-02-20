@@ -7,8 +7,6 @@ import ThemeRegistry from "@/components/ThemeRegistry/ThemeRegistry"
 import { Button } from "@mui/material"
 import { HEADER_HEIGHT } from "@/constants/layout"
 import { MenuModal } from "@/components/MenuModal"
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Jost } from "next/font/google"
 
 export default function RootLayout({
     children,
