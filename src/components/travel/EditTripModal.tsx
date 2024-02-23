@@ -22,8 +22,12 @@ type Props = Readonly<{
         heading?: string
         description?: string
         rawMarkdown?: string
+        longitude?: number
+        latitude?: number
     }
 }>
+
+const regex = /@(?<latitude>-?\d+\.\d+),(?<longitude>-?\d+\.\d+)/
 
 export function EditTripModal({ open, onClose, values }: Props) {
     const [heading, setHeading] = React.useState<string>(values.heading ?? "")
@@ -32,6 +36,13 @@ export function EditTripModal({ open, onClose, values }: Props) {
     )
     const [rawMarkdown, setRawMarkdown] = React.useState<string>(
         values.rawMarkdown ?? ""
+    )
+    const [mapsLocationUrl, setMapsLocationUrl] = React.useState<string>()
+    const [longitude, setLongitude] = React.useState<number | undefined>(
+        values.longitude
+    )
+    const [latitude, setLatitude] = React.useState<number | undefined>(
+        values.latitude
     )
 
     const [loading, setLoading] = React.useState(false)
@@ -59,6 +70,32 @@ export function EditTripModal({ open, onClose, values }: Props) {
         [setRawMarkdown]
     )
 
+    const handleLocationStringChange = React.useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            const mapsLocation = event.target.value
+            setMapsLocationUrl(mapsLocation)
+
+            const matches = mapsLocation.match(regex)
+
+            if (!matches?.groups) {
+                setLongitude(undefined)
+                setLatitude(undefined)
+                return
+            }
+
+            const { longitude, latitude } = matches.groups
+
+            if (!longitude || !latitude) {
+                setLongitude(undefined)
+                setLatitude(undefined)
+                return
+            }
+            setLongitude(Number.parseFloat(longitude))
+            setLatitude(Number.parseFloat(latitude))
+        },
+        [setLatitude, setLongitude]
+    )
+
     const handleUpdateTrip = React.useCallback(async () => {
         setLoading(true)
         setError(false)
@@ -67,6 +104,8 @@ export function EditTripModal({ open, onClose, values }: Props) {
             heading,
             description,
             rawMarkdownContent: rawMarkdown,
+            longitude,
+            latitude,
         }
 
         const res = await fetch(`/api/trips/${values.tripId}`, {
@@ -82,7 +121,7 @@ export function EditTripModal({ open, onClose, values }: Props) {
             return
         }
         onClose()
-    }, [rawMarkdown, heading, description])
+    }, [rawMarkdown, heading, description, longitude, latitude])
 
     return (
         <Modal open={open} onClose={onClose}>
@@ -113,6 +152,17 @@ export function EditTripModal({ open, onClose, values }: Props) {
                         onChange={handleDescriptionChange}
                         disabled={loading}
                     />
+
+                    <FormLabel>Location</FormLabel>
+                    <TextField
+                        sx={{ width: "100%" }}
+                        value={mapsLocationUrl}
+                        onChange={handleLocationStringChange}
+                        disabled={loading}
+                    />
+
+                    <TextField value={longitude} disabled={true} />
+                    <TextField value={latitude} disabled={true} />
 
                     <Box
                         sx={{

@@ -55,6 +55,8 @@ export async function PATCH(
                 heading: trip.heading ?? undefined,
                 description: trip.description ?? undefined,
                 rawMarkdownContent: trip.rawMarkdownContent ?? undefined,
+                longitude: trip.longitude ?? undefined,
+                latitude: trip.latitude ?? undefined,
             },
         }
     )

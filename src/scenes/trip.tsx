@@ -288,6 +288,8 @@ export default function Travel({ tripId }: Props) {
                     heading: trip.heading,
                     description: trip.description,
                     rawMarkdown: trip.rawMarkdownContent,
+                    longitude: trip.longitude,
+                    latitude: trip.latitude,
                 }}
             ></EditTripModal>
         </Box>
