@@ -89,9 +89,7 @@ export async function POST(request: NextRequest) {
         images: imageUrls,
         longitude: trip.get("longitude"),
         latitude: trip.get("latitude"),
-        privatePost: trip.has("privatePost")
-            ? !!trip.get("privatePost")
-            : false,
+        privatePost: trip.get("privatePost") === "true",
         entryDate: Date.now(),
     })
 
