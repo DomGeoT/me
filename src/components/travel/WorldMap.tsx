@@ -99,7 +99,7 @@ function WorldMap({ positions }: Props) {
         })
 
         setSvgPaths([...mapPaths, ...linkPaths])
-    }, [width, height])
+    }, [width, height, positions])
 
     return (
         <Box sx={{ width: "100%", height: "100%" }} ref={boxRef}>
