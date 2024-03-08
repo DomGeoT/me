@@ -20,6 +20,11 @@ export function MenuModal({ open, onClose }: Props) {
         onClose()
     }, [router, onClose])
 
+    const handleGoToMap = React.useCallback(() => {
+        router.push("/travel/map")
+        onClose()
+    }, [router, onClose])
+
     return (
         <Modal open={open} onClose={onClose} sx={{ maxWidth: "425px" }}>
             <Box
@@ -33,6 +38,9 @@ export function MenuModal({ open, onClose }: Props) {
                 </Button>
                 <Button onClick={handleGoToTravel}>
                     <InvertingText>Travel</InvertingText>
+                </Button>
+                <Button onClick={handleGoToMap}>
+                    <InvertingText>Map [WIP]</InvertingText>
                 </Button>
                 <Button onClick={onClose}>
                     <InvertingText>
