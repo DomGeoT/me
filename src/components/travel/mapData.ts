@@ -1,3 +1,5 @@
+import * as d3 from "d3"
+
 export const mapData = {
     type: "FeatureCollection",
     features: [
@@ -13206,4 +13208,4 @@ export const mapData = {
             id: "ZWE",
         },
     ],
-}
+} as d3.ExtendedFeatureCollection
