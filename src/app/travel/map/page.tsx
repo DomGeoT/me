@@ -33,5 +33,5 @@ export default function MapPage() {
         return
     }
 
-    return <WorldMap positions={trips} />
+    return <WorldMap trips={trips} />
 }
