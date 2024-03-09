@@ -1,15 +1,12 @@
 "use client"
-
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import * as d3 from "d3"
 import { Box } from "@mui/material"
 import { mapData } from "./mapData"
-import QuickPinchZoom, { make3dTransformValue } from "react-quick-pinch-zoom"
 
 type Props = Readonly<{ positions: { longitude: number; latitude: number }[] }>
 
 function WorldMap({ positions }: Props) {
-    const [svgPaths, setSvgPaths] = React.useState<React.ReactNode[]>([])
     const [width, setWidth] = useState(800)
     const [height, setHeight] = useState(600)
     const boxRef = useRef<Element>(null)
@@ -17,27 +14,13 @@ function WorldMap({ positions }: Props) {
 
     const pairs: [number, number][][] = []
 
-    // Iterate through the positions array to create pairs
     for (let i = 0; i < positions.length - 1; i++) {
-        // Create a pair of consecutive coordinates
         const pair: [number, number][] = [
             [positions[i].longitude, positions[i].latitude],
             [positions[i + 1].longitude, positions[i + 1].latitude],
         ]
-        // Push the pair to the pairs array
         pairs.push(pair)
     }
-
-    const onUpdate = useCallback(
-        ({ x, y, scale }: { x: number; y: number; scale: number }) => {
-            // check if image exists
-            if (svgRef.current) {
-                const value = make3dTransformValue({ x, y, scale })
-                svgRef.current.style.setProperty("transform", value)
-            }
-        },
-        []
-    )
 
     useEffect(() => {
         const resizeObserver = new ResizeObserver((entries) => {
@@ -58,63 +41,56 @@ function WorldMap({ positions }: Props) {
         }
     }, [])
 
+    const handleZoom = (e: { transform: d3.ZoomTransform }) => {
+        d3.select("svg g").attr("transform", e.transform.toString())
+        d3.selectAll("svg line")
+            .attr("transform", e.transform.toString())
+            .attr("stroke-width", 1.5 / e.transform.k)
+
+        console.warn("transform", e.transform)
+    }
+
+    const zoom = d3
+        .zoom<SVGSVGElement, unknown>()
+        .scaleExtent([1, 10])
+        .on("zoom", handleZoom)
+
     useEffect(() => {
         const projection = d3
             .geoMercator()
-            .fitSize([width, height], mapData as d3.ExtendedFeatureCollection)
+            .fitSize([width, height], mapData)
+            .center([0, 5])
 
         const geoPathGenerator = d3.geoPath().projection(projection)
 
-        const mapPaths = mapData.features
-            .filter((shape) => shape.id !== "ATA")
-            .map((shape) => {
-                return (
-                    <path
-                        key={shape.id}
-                        d={geoPathGenerator(shape) ?? undefined}
-                        stroke="white"
-                        strokeWidth={0.5}
-                        fill="black"
-                        fillOpacity={0.9}
-                    />
-                )
-            })
+        const svg = d3.select("#map")
+        svg.call(zoom)
+        svg.selectChildren().remove()
 
-        const linkPaths = pairs.map((a) => {
-            return (
-                <path
-                    key={"p"}
-                    d={
-                        geoPathGenerator({
-                            type: "LineString",
-                            coordinates: [a[0], a[1]],
-                        }) ?? undefined
-                    }
-                    stroke="orange"
-                    strokeWidth={0.2}
-                    fill="orange"
-                    fillOpacity={0.9}
-                />
-            )
-        })
+        svg.append("g")
+            .selectAll("path")
+            .data(mapData.features.filter((shape) => shape.id !== "ATA"))
+            .enter()
+            .append("path")
+            .attr("fill", "#000000")
+            .attr("d", geoPathGenerator)
+            .style("stroke", "#FFFFFF")
 
-        setSvgPaths([...mapPaths, ...linkPaths])
-    }, [width, height, positions])
+        for (const [c1, c2] of pairs) {
+            svg.append("line")
+                .attr("fill", "orange")
+                .attr("stroke-width", 0.3)
+                .attr("x1", projection(c1)?.[0] ?? 0)
+                .attr("y1", projection(c1)?.[1] ?? 0)
+                .attr("x2", projection(c2)?.[0] ?? 0)
+                .attr("y2", projection(c2)?.[1] ?? 0)
+                .style("stroke", "orange")
+        }
+    }, [width, height, pairs])
 
     return (
         <Box sx={{ width: "100%", height: "100%" }} ref={boxRef}>
-            <QuickPinchZoom
-                onUpdate={onUpdate}
-                tapZoomFactor={2}
-                zoomOutFactor={4}
-                inertiaFriction={0}
-                maxZoom={10}
-                minZoom={1}
-            >
-                <svg width={width} height={height} ref={svgRef}>
-                    {svgPaths}
-                </svg>
-            </QuickPinchZoom>
+            <svg id="map" width={width} height={height} ref={svgRef} />
         </Box>
     )
 }
