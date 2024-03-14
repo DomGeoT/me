@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import * as d3 from "d3"
 import { Box } from "@mui/material"
+import { useTheme } from "@mui/material/styles"
 import { mapData } from "./mapData"
 import { TripShape } from "@/types/collections/trips"
 import { TripPreview } from "./TripPreview"
@@ -9,6 +10,7 @@ import { TripPreview } from "./TripPreview"
 type Props = Readonly<{ trips: TripShape[] }>
 
 function WorldMap({ trips }: Props) {
+    const theme = useTheme()
     const [width, setWidth] = useState(800)
     const [height, setHeight] = useState(600)
     const boxRef = useRef<Element>(null)
@@ -82,24 +84,24 @@ function WorldMap({ trips }: Props) {
             .data(mapData.features.filter((shape) => shape.id !== "ATA"))
             .enter()
             .append("path")
-            .attr("fill", "#000000")
+            .attr("fill", theme.palette.primary.dark)
             .attr("d", geoPathGenerator)
-            .style("stroke", "#FFFFFF")
+            .style("stroke", theme.palette.background.default)
 
         for (const [c1, c2] of pairs) {
             svg.append("line")
-                .attr("fill", "orange")
+                .attr("fill", theme.palette.primary.main)
                 .attr("stroke-width", 0.3)
                 .attr("x1", projection(c1)?.[0] ?? 0)
                 .attr("y1", projection(c1)?.[1] ?? 0)
                 .attr("x2", projection(c2)?.[0] ?? 0)
                 .attr("y2", projection(c2)?.[1] ?? 0)
-                .style("stroke", "orange")
+                .style("stroke", theme.palette.primary.main)
         }
 
         function transform(longitude: number, latitude: number) {
             return () => {
-                const scale = 6
+                const scale = 10
                 const point = projection([longitude, latitude]) ?? [0, 0]
                 return d3.zoomIdentity
                     .translate(
