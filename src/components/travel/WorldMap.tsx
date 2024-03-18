@@ -1,7 +1,7 @@
 "use client"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import * as d3 from "d3"
-import { Box } from "@mui/material"
+import { Box, useMediaQuery } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
 import { mapData } from "./mapData"
 import { TripShape } from "@/types/collections/trips"
@@ -11,6 +11,7 @@ type Props = Readonly<{ trips: TripShape[] }>
 
 function WorldMap({ trips }: Props) {
     const theme = useTheme()
+    const smallScreen = useMediaQuery(theme.breakpoints.down("sm"))
     const [width, setWidth] = useState(800)
     const [height, setHeight] = useState(600)
     const boxRef = useRef<Element>(null)
@@ -120,39 +121,56 @@ function WorldMap({ trips }: Props) {
         }
     }, [width, height, pairs])
 
+    const handleCardInteraction = useCallback((trip: TripShape) => {
+        if (!zoomToPointRef.current) {
+            return
+        }
+        zoomToPointRef.current(trip.longitude, trip.latitude)
+    }, [])
+
     return (
         <Box
             sx={{ width: "100%", height: "100%", position: "relative" }}
             ref={boxRef}
         >
-            <svg id="map" width={width} height={height} ref={svgRef} />
+            <svg
+                id="map"
+                width={width}
+                height={smallScreen ? height - 200 : height}
+                ref={svgRef}
+                style={{ position: "absolute", top: 0, left: 0 }}
+            />
 
             <Box
                 sx={{
                     position: "absolute",
+                    display: "flex",
                     height: "100%",
-                    maxHeight: "100%",
+                    maxHeight: smallScreen ? "200px" : "100%",
                     overflow: "scroll",
-                    top: 0,
+                    top: smallScreen ? undefined : "0",
+                    bottom: smallScreen ? 0 : undefined,
                     left: 0,
-                    width: "25%",
-                    minWidth: "350px",
+                    width: smallScreen ? "100%" : "25%",
+                    minWidth: smallScreen ? undefined : "350px",
+                    maxWidth: "100%",
                     "& > *": {
-                        margin: "15px",
+                        marginY: smallScreen ? undefined : "15px",
+                        marginX: "15px",
                     },
+                    flexDirection: smallScreen ? "row" : "column",
                 }}
             >
                 {trips.map((trip) => (
                     <Box
                         key={trip._id}
-                        onMouseEnter={() => {
-                            if (!zoomToPointRef.current) {
-                                return
-                            }
-                            zoomToPointRef.current(
-                                trip.longitude,
-                                trip.latitude
-                            )
+                        onMouseEnter={() => handleCardInteraction(trip)}
+                        onTouchStart={() => handleCardInteraction(trip)}
+                        sx={{
+                            "& > *": {
+                                width: smallScreen ? "200px" : undefined,
+                                height: smallScreen ? "200px" : undefined,
+                            },
                         }}
                     >
                         <TripPreview
