@@ -42,6 +42,7 @@ export default function Travel() {
                     gridTemplateColumns:
                         "repeat(auto-fill, minmax(300px, 1fr))",
                     gap: "10px", // Adjust the gap size as needed
+                    paddingTop: "10px",
                 }}
             >
                 {!tripsFetched &&
