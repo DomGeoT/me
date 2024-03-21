@@ -57,6 +57,7 @@ export default function Travel() {
                         name={trip.heading}
                         description={trip.description}
                         entryDate={new Date(trip.entryDate)}
+                        smallMode={false}
                     />
                 ))}
             </Box>

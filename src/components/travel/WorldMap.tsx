@@ -136,7 +136,7 @@ function WorldMap({ trips }: Props) {
             <svg
                 id="map"
                 width={width}
-                height={smallScreen ? height - 200 : height}
+                height={smallScreen ? height - 100 : height}
                 ref={svgRef}
                 style={{ position: "absolute", top: 0, left: 0 }}
             />
@@ -179,6 +179,7 @@ function WorldMap({ trips }: Props) {
                             name={trip.heading}
                             description={trip.description}
                             entryDate={new Date(trip.entryDate)}
+                            smallMode={smallScreen}
                         />
                     </Box>
                 ))}

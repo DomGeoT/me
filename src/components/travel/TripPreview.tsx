@@ -17,6 +17,7 @@ type Props = Readonly<{
     description: string
     images: string[]
     entryDate: Date
+    smallMode: boolean
 }>
 
 const PaddedSkeleton = styled(Skeleton)`
@@ -84,6 +85,7 @@ export function TripPreview({
     description,
     images,
     entryDate,
+    smallMode,
 }: Props) {
     const theme = useTheme()
     return (
@@ -107,40 +109,58 @@ export function TripPreview({
                             layout="fill" // Fill the parent container
                             objectFit="cover" // Maintain aspect ratio and cover the container
                         />
+                        {smallMode && (
+                            <Typography
+                                position={"absolute"}
+                                variant="h6"
+                                sx={{
+                                    textTransform: "uppercase",
+                                    margin: "10px",
+                                    background:
+                                        theme.palette.background.default,
+                                    fontSize: "15px",
+                                }}
+                                bottom={0}
+                            >
+                                {name}
+                            </Typography>
+                        )}
                     </CardMedia>
                 )}
-                <CardContent>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems: "flex-start",
-                        }}
-                    >
-                        <Typography
-                            variant="h5"
-                            sx={{ textTransform: "uppercase" }}
-                        >
-                            {name}
-                        </Typography>
-                        <Typography
-                            variant="body2"
+                {!smallMode && (
+                    <CardContent>
+                        <Box
                             sx={{
-                                alignSelf: "flex-start",
-                                marginLeft: "auto",
-                                marginTop: "6px",
+                                display: "flex",
+                                flexDirection: "row",
+                                alignItems: "flex-start",
                             }}
                         >
-                            {entryDate?.toLocaleDateString()}
+                            <Typography
+                                variant="h5"
+                                sx={{ textTransform: "uppercase" }}
+                            >
+                                {name}
+                            </Typography>
+                            <Typography
+                                variant="body2"
+                                sx={{
+                                    alignSelf: "flex-start",
+                                    marginLeft: "auto",
+                                    marginTop: "6px",
+                                }}
+                            >
+                                {entryDate?.toLocaleDateString()}
+                            </Typography>
+                        </Box>
+                        <Typography
+                            variant="body1"
+                            sx={{ maxHeight: "100px", wordWrap: "break-word" }}
+                        >
+                            {description}
                         </Typography>
-                    </Box>
-                    <Typography
-                        variant="body1"
-                        sx={{ maxHeight: "100px", wordWrap: "break-word" }}
-                    >
-                        {description}
-                    </Typography>
-                </CardContent>
+                    </CardContent>
+                )}
             </CardActionArea>
         </Card>
     )
