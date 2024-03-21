@@ -54,8 +54,9 @@ function WorldMap({ trips }: Props) {
         d3.selectAll("svg line")
             .attr("transform", e.transform.toString())
             .attr("stroke-width", 1.5 / e.transform.k)
-
-        console.warn("transform", e.transform)
+        d3.selectAll("svg circle")
+            .attr("transform", e.transform.toString())
+            .attr("stroke-width", 0.01 / e.transform.k)
     }
 
     useEffect(() => {
@@ -98,6 +99,14 @@ function WorldMap({ trips }: Props) {
                 .attr("x2", projection(c2)?.[0] ?? 0)
                 .attr("y2", projection(c2)?.[1] ?? 0)
                 .style("stroke", theme.palette.primary.main)
+        }
+
+        for (const { longitude, latitude } of trips) {
+            svg.append("circle")
+                .attr("fill", "grey") // Set the fill color to grey
+                .attr("r", 0.3) // Set the radius of the circle (adjust as needed)
+                .attr("cx", projection([longitude, latitude])?.[0] ?? 0) // Compute x position using projection
+                .attr("cy", projection([longitude, latitude])?.[1] ?? 0) // Compute y position using projection
         }
 
         function transform(longitude: number, latitude: number) {
