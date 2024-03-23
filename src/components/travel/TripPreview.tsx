@@ -9,7 +9,7 @@ import {
     Skeleton,
 } from "@mui/material"
 import { useTheme, styled } from "@mui/material/styles"
-import Image from "next/image"
+import { Image } from "@/components"
 
 type Props = Readonly<{
     _id: string

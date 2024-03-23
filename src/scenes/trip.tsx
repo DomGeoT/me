@@ -18,7 +18,7 @@ import { InvertingText } from "@/components/maximalism"
 import { getPassword } from "@/utils"
 import { ArrowLeft, ArrowRight } from "@mui/icons-material"
 import { EditTripModal } from "@/components"
-import Image from "next/image"
+import { Image } from "@/components"
 
 type Props = Readonly<{ tripId: string }>
 
