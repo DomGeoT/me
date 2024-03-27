@@ -108,14 +108,17 @@ export default function Travel({ tripId }: Props) {
 
     if (loading) {
         return (
-            <CircularProgress
+            <Box
                 sx={{
-                    position: "fixed",
-                    top: "50%",
-                    right: "50%",
-                    transform: "translate(-50%, -50%)",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                    height: "100%",
                 }}
-            />
+            >
+                <CircularProgress />
+            </Box>
         )
     }
     if (!trip) {
