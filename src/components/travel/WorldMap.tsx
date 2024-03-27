@@ -163,9 +163,12 @@ function WorldMap({ trips }: Props) {
                     width: smallScreen ? "100%" : "25%",
                     minWidth: smallScreen ? undefined : "350px",
                     maxWidth: "100%",
+                    marginTop: theme.spacing(1.5),
                     "& > *": {
-                        marginY: smallScreen ? undefined : "15px",
-                        marginX: "15px",
+                        marginBottom: smallScreen
+                            ? undefined
+                            : theme.spacing(1.5),
+                        marginX: theme.spacing(1.5),
                     },
                     flexDirection: smallScreen ? "row" : "column",
                 }}
