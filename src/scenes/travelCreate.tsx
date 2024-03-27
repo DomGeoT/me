@@ -272,6 +272,7 @@ export function TravelCreate() {
                                         visibility: "visible", // Show the CloseIcon when Paper is hovered
                                     },
                                 }}
+                                onClick={() => handleDeleteImage(image)}
                             >
                                 <Box
                                     sx={{
@@ -301,7 +302,6 @@ export function TravelCreate() {
                                         transition: "transform 0.2s", // Add a transition for smooth hover effect
                                     }}
                                     src={URL.createObjectURL(image)}
-                                    onClick={() => handleDeleteImage(image)}
                                 />
                             </Paper>
                         ))}
