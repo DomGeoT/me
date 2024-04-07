@@ -89,6 +89,8 @@ function WorldMap({ trips }: Props) {
             .attr("fill", theme.palette.primary.dark)
             .attr("d", geoPathGenerator)
             .style("stroke", theme.palette.background.default)
+            .attr("stroke-width", 1)
+            .style("paint-order", "stroke")
 
         for (const [c1, c2] of pairs) {
             svg.append("line")
