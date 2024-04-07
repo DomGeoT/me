@@ -73,7 +73,7 @@ export default function RootLayout({
                             flexGrow: 1,
                             bgcolor: "background.default",
                             mt: ["48px", "56px", "64px"],
-                            height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+                            height: `calc(100dvh - ${HEADER_HEIGHT}px)`,
                             position: "relative",
                         }}
                     >
