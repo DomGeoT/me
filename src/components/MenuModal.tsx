@@ -40,7 +40,7 @@ export function MenuModal({ open, onClose }: Props) {
                     <InvertingText>Travel</InvertingText>
                 </Button>
                 <Button onClick={handleGoToMap}>
-                    <InvertingText>Map [WIP]</InvertingText>
+                    <InvertingText>Map</InvertingText>
                 </Button>
                 <Button onClick={onClose}>
                     <InvertingText>

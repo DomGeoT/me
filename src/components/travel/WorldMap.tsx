@@ -51,6 +51,10 @@ function WorldMap({ trips }: Props) {
 
     const handleZoom = (e: { transform: d3.ZoomTransform }) => {
         d3.select("svg g").attr("transform", e.transform.toString())
+        d3.selectAll("svg path").attr(
+            "stroke-width",
+            Math.min(4 / e.transform.k, 3)
+        )
         d3.selectAll("svg line")
             .attr("transform", e.transform.toString())
             .attr("stroke-width", 1.5 / e.transform.k)
@@ -89,7 +93,7 @@ function WorldMap({ trips }: Props) {
             .attr("fill", theme.palette.primary.dark)
             .attr("d", geoPathGenerator)
             .style("stroke", theme.palette.background.default)
-            .attr("stroke-width", 1)
+            .attr("stroke-width", 3)
             .style("paint-order", "stroke")
 
         for (const [c1, c2] of pairs) {
