@@ -17,6 +17,8 @@ function WorldMap({ trips }: Props) {
     const boxRef = useRef<Element>(null)
     const svgRef = useRef<SVGSVGElement>(null)
 
+    const borderWidth = smallScreen ? 1 : 3
+
     const zoomToPointRef =
         useRef<(longitude: number, latitude: number) => void>()
 
@@ -53,7 +55,7 @@ function WorldMap({ trips }: Props) {
         d3.select("svg g").attr("transform", e.transform.toString())
         d3.selectAll("svg path").attr(
             "stroke-width",
-            Math.min(4 / e.transform.k, 3)
+            Math.min(4 / e.transform.k, borderWidth)
         )
         d3.selectAll("svg line")
             .attr("transform", e.transform.toString())
@@ -93,7 +95,7 @@ function WorldMap({ trips }: Props) {
             .attr("fill", theme.palette.primary.dark)
             .attr("d", geoPathGenerator)
             .style("stroke", theme.palette.background.default)
-            .attr("stroke-width", 3)
+            .attr("stroke-width", borderWidth)
             .style("paint-order", "stroke")
 
         for (const [c1, c2] of pairs) {
