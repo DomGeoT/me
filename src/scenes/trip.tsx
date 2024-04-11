@@ -5,7 +5,6 @@ import {
     Box,
     Button,
     CircularProgress,
-    IconButton,
     Link,
     Typography,
     useMediaQuery,
@@ -19,6 +18,7 @@ import { getPassword } from "@/utils"
 import { ArrowLeft, ArrowRight } from "@mui/icons-material"
 import { EditTripModal } from "@/components"
 import { Image } from "@/components"
+import Carousel from "react-material-ui-carousel"
 
 type Props = Readonly<{ tripId: string }>
 
@@ -30,7 +30,6 @@ export default function Travel({ tripId }: Props) {
     const [showEditTripModal, setShowEditTripModal] = React.useState(false)
     const [loading, setLoading] = React.useState(true)
     const [hideLabels, setHideLables] = React.useState(false)
-    const [currentImage, setCurrentImage] = React.useState(0)
 
     const [password, setPassword] = React.useState<string>()
 
@@ -41,33 +40,6 @@ export default function Travel({ tripId }: Props) {
     const handleToggleEditTripModal = React.useCallback(() => {
         setShowEditTripModal((state) => !state)
     }, [])
-
-    const handleClickLeftImageArrow = React.useCallback(
-        () =>
-            setCurrentImage((state) => {
-                if (!trip) {
-                    return 0
-                }
-                if (state === 0) {
-                    return trip.images.length - 1
-                }
-                return state - 1
-            }),
-        [trip]
-    )
-    const handleClickRightImageArrow = React.useCallback(
-        () =>
-            setCurrentImage((state) => {
-                if (!trip) {
-                    return 0
-                }
-                if (state === trip.images.length - 1) {
-                    return 0
-                }
-                return state + 1
-            }),
-        [trip]
-    )
 
     React.useEffect(() => {
         async function f() {
@@ -137,25 +109,40 @@ export default function Travel({ tripId }: Props) {
         >
             {trip.images?.length > 0 && (
                 <Box sx={{ position: "relative", width: "100%" }}>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            position: "relative",
-                            width: "100%",
-                            height: "100%",
-                            maxHeight: `calc(95vh - ${HEADER_HEIGHT}px)`,
-                            minHeight: "75vh",
-                        }}
-                        onClick={handleToggleHideLabels}
+                    <Carousel
+                        indicators={false}
+                        animation="fade"
+                        duration={100}
+                        NextIcon={<ArrowRight />}
+                        PrevIcon={<ArrowLeft />}
                     >
-                        <Image
-                            src={trip.images[currentImage]}
-                            alt={""}
-                            fill={true}
-                            objectFit={hideLabels ? "contain" : "cover"}
-                        />
-                    </Box>
-
+                        {trip.images.map((image) => {
+                            return (
+                                <>
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            position: "relative",
+                                            width: "100%",
+                                            height: "100%",
+                                            maxHeight: `calc(95vh - ${HEADER_HEIGHT}px)`,
+                                            minHeight: "75vh",
+                                        }}
+                                        onClick={handleToggleHideLabels}
+                                    >
+                                        <Image
+                                            src={image}
+                                            alt={""}
+                                            fill={true}
+                                            objectFit={
+                                                hideLabels ? "contain" : "cover"
+                                            }
+                                        />
+                                    </Box>
+                                </>
+                            )
+                        })}
+                    </Carousel>
                     <Typography
                         variant={smallScreen ? "h4" : "h2"}
                         sx={{
@@ -167,11 +154,11 @@ export default function Travel({ tripId }: Props) {
                             overflow: "clip",
                             textOverflow: "clip",
                             transition: "left 0.3s ease-in-out",
+                            zIndex: 100,
                         }}
                     >
                         {trip.heading}
                     </Typography>
-
                     <Typography
                         variant={"body1"}
                         sx={{
@@ -181,46 +168,14 @@ export default function Travel({ tripId }: Props) {
                             padding: "10px",
                             backgroundColor: "background.paper",
                             maxWidth: "100%",
-
                             left: hideLabels ? "-100vw" : theme.spacing(2),
                             textOverflow: "clip",
                             transition: "left 0.3s ease-in-out",
+                            zIndex: 100,
                         }}
                     >
                         {trip.description}
                     </Typography>
-
-                    {trip.images.length > 1 && (
-                        <IconButton
-                            onClick={handleClickLeftImageArrow}
-                            sx={{
-                                position: "absolute",
-                                top: "50%",
-                                left: theme.spacing(4),
-                                transform: "translate(0%, -50%)",
-                                padding: "1px",
-                                backgroundColor: theme.palette.background.paper,
-                            }}
-                        >
-                            <ArrowLeft />
-                        </IconButton>
-                    )}
-
-                    {trip.images.length > 1 && (
-                        <IconButton
-                            onClick={handleClickRightImageArrow}
-                            sx={{
-                                position: "absolute",
-                                top: "50%",
-                                right: theme.spacing(4),
-                                transform: "translate(0%, -50%)",
-                                padding: "1px",
-                                backgroundColor: theme.palette.background.paper,
-                            }}
-                        >
-                            <ArrowRight />
-                        </IconButton>
-                    )}
                 </Box>
             )}
 
