@@ -115,6 +115,7 @@ export default function Travel({ tripId }: Props) {
                         duration={100}
                         NextIcon={<ArrowRight />}
                         PrevIcon={<ArrowLeft />}
+                        autoPlay={false}
                     >
                         {trip.images.map((image) => {
                             return (
