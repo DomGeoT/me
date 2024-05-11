@@ -18,7 +18,6 @@ export default function Travel() {
                     Authorization: getPassword(),
                 },
             })
-            setTripsFetched(true)
             if (!res.ok) {
                 return
             }
@@ -28,6 +27,7 @@ export default function Travel() {
                     tripA.entryDate > tripB.entryDate ? -1 : 1
                 ) // order by entry date
             )
+            setTripsFetched(true)
         }
         void f()
     }, [])
