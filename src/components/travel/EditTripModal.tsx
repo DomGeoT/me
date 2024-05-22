@@ -27,7 +27,7 @@ type Props = Readonly<{
     }
 }>
 
-const regex = /@(?<latitude>-?\d+\.\d+),(?<longitude>-?\d+\.\d+)/
+const regex = /!3d(?<latitude>-?\d+\.\d+)!4d(?<longitude>-?\d+\.\d+)/
 
 export function EditTripModal({ open, onClose, values }: Props) {
     const [heading, setHeading] = React.useState<string>(values.heading ?? "")
