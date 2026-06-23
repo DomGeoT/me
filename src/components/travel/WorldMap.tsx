@@ -22,13 +22,10 @@ function WorldMap({ trips }: Props) {
     const zoomToPointRef =
         useRef<(longitude: number, latitude: number) => void>()
 
-    const pairs: [number, number][][] = []
+    const pairs: TripShape[][] = []
 
     for (let i = 0; i < trips.length - 1; i++) {
-        const pair: [number, number][] = [
-            [trips[i].longitude, trips[i].latitude],
-            [trips[i + 1].longitude, trips[i + 1].latitude],
-        ]
+        const pair: TripShape[] = [trips[i], trips[i + 1]]
         pairs.push(pair)
     }
 
@@ -99,13 +96,19 @@ function WorldMap({ trips }: Props) {
             .style("paint-order", "stroke")
 
         for (const [c1, c2] of pairs) {
+            if (c1.tripName !== c2.tripName) {
+                continue
+            }
+
+            const c1Point: [number, number] = [c1.longitude, c1.latitude]
+            const c2Point: [number, number] = [c2.longitude, c2.latitude]
             svg.append("line")
                 .attr("fill", theme.palette.primary.main)
                 .attr("stroke-width", 0.3)
-                .attr("x1", projection(c1)?.[0] ?? 0)
-                .attr("y1", projection(c1)?.[1] ?? 0)
-                .attr("x2", projection(c2)?.[0] ?? 0)
-                .attr("y2", projection(c2)?.[1] ?? 0)
+                .attr("x1", projection(c1Point)?.[0] ?? 0)
+                .attr("y1", projection(c1Point)?.[1] ?? 0)
+                .attr("x2", projection(c2Point)?.[0] ?? 0)
+                .attr("y2", projection(c2Point)?.[1] ?? 0)
                 .style("stroke", theme.palette.primary.main)
         }
 

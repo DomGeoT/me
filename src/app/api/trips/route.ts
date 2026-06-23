@@ -27,6 +27,7 @@ export async function GET(request: NextRequest) {
             longitude: trip.longitude,
             latitude: trip.latitude,
             entryDate: new Date(trip.entryDate),
+            tripName: trip.tripName,
         }))
 
     return NextResponse.json({ trips: tripMapping }, { status: 200 })
@@ -41,6 +42,7 @@ export async function POST(request: NextRequest) {
         !trip.has("rawMarkdownContent") ||
         !trip.has("longitude") ||
         !trip.has("latitude") ||
+        !trip.has("tripName") ||
         !trip.has("image")
     ) {
         return NextResponse.json({}, { status: 400 })
@@ -92,6 +94,7 @@ export async function POST(request: NextRequest) {
         latitude: trip.get("latitude"),
         privatePost: trip.get("privatePost") === "true",
         entryDate: Date.now(),
+        tripName: trip.get("tripName"),
     })
 
     return NextResponse.json(

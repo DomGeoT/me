@@ -31,6 +31,7 @@ export async function GET(
         longitude: _trip.longitude,
         latitude: _trip.latitude,
         entryDate: new Date(_trip.entryDate),
+        tripName: _trip.tripName,
     }
 
     return NextResponse.json({ trip }, { status: 200 })
@@ -57,6 +58,7 @@ export async function PATCH(
                 rawMarkdownContent: trip.rawMarkdownContent ?? undefined,
                 longitude: trip.longitude ?? undefined,
                 latitude: trip.latitude ?? undefined,
+                tripName: trip.tripName ?? undefined,
             },
         }
     )

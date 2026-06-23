@@ -21,6 +21,7 @@ type Props = Readonly<{
         tripId: string
         heading?: string
         description?: string
+        tripName?: string
         rawMarkdown?: string
         longitude?: number
         latitude?: number
@@ -33,6 +34,9 @@ export function EditTripModal({ open, onClose, values }: Props) {
     const [heading, setHeading] = React.useState<string>(values.heading ?? "")
     const [description, setDescription] = React.useState<string>(
         values.description ?? ""
+    )
+    const [tripName, setTripName] = React.useState<string>(
+        values.tripName ?? ""
     )
     const [rawMarkdown, setRawMarkdown] = React.useState<string>(
         values.rawMarkdown ?? ""
@@ -62,6 +66,15 @@ export function EditTripModal({ open, onClose, values }: Props) {
             setDescription(event.target.value)
         },
         [setDescription]
+    )
+    const handleTripNameChange = React.useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            if (event.target.value.length > 64) {
+                return
+            }
+            setTripName(event.target.value)
+        },
+        [setTripName]
     )
     const handleRawMarkdownChange = React.useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,6 +116,7 @@ export function EditTripModal({ open, onClose, values }: Props) {
         const body: PatchTripRequest = {
             heading,
             description,
+            tripName,
             rawMarkdownContent: rawMarkdown,
             longitude,
             latitude,
@@ -150,6 +164,14 @@ export function EditTripModal({ open, onClose, values }: Props) {
                         sx={{ width: "100%" }}
                         value={description}
                         onChange={handleDescriptionChange}
+                        disabled={loading}
+                    />
+
+                    <FormLabel>Trip Name</FormLabel>
+                    <TextField
+                        sx={{ width: "100%" }}
+                        value={tripName}
+                        onChange={handleTripNameChange}
                         disabled={loading}
                     />
 

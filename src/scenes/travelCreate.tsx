@@ -38,6 +38,7 @@ export function TravelCreate() {
 
     const [heading, setHeading] = React.useState<string>("")
     const [description, setDescription] = React.useState<string>("")
+    const [tripName, setTripName] = React.useState<string>("")
     const [rawMarkdown, setRawMarkdown] = React.useState<string>("")
     const [longitude, setLongitude] = React.useState<number>()
     const [latitude, setLatitude] = React.useState<number>()
@@ -62,6 +63,15 @@ export function TravelCreate() {
         },
         [setDescription]
     )
+    const handleTripNameChange = React.useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            if (event.target.value.length > 64) {
+                return
+            }
+            setTripName(event.target.value)
+        },
+        [setTripName]
+    )
     const handleRawMarkdownChange = React.useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
             setRawMarkdown(event.target.value)
@@ -80,6 +90,7 @@ export function TravelCreate() {
         const body = {
             heading,
             description,
+            tripName,
             rawMarkdownContent: rawMarkdown,
             longitude: `${longitude}`,
             latitude: `${latitude}`,
@@ -203,6 +214,14 @@ export function TravelCreate() {
                     sx={{ width: "100%" }}
                     value={description}
                     onChange={handleDescriptionChange}
+                    disabled={loading}
+                />
+
+                <FormLabel>Trip Name</FormLabel>
+                <TextField
+                    sx={{ width: "100%" }}
+                    value={tripName}
+                    onChange={handleTripNameChange}
                     disabled={loading}
                 />
 

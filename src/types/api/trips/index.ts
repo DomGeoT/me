@@ -9,6 +9,7 @@ export type PatchTripRequest = Partial<
         | "rawMarkdownContent"
         | "longitude"
         | "latitude"
+        | "tripName"
     >
 >
 export type GetTripsResponse = { trips: TripShape[] }

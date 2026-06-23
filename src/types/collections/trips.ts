@@ -8,4 +8,5 @@ export type TripShape = {
     latitude: number
     privatePost?: boolean
     entryDate: Date
+    tripName?: string
 }

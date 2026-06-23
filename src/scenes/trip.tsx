@@ -191,6 +191,7 @@ export default function Travel({ tripId }: Props) {
                     sx={{
                         display: "flex",
                         flexDirection: smallScreen ? "column" : "row",
+                        justifyContent: "space-between",
                     }}
                 >
                     <Link
@@ -203,6 +204,21 @@ export default function Travel({ tripId }: Props) {
                             {Number(trip.latitude).toFixed(2)}
                         </InvertingText>
                     </Link>
+
+                    {trip.tripName ? (
+                        <div>
+                            <InvertingText variant="h6">
+                                Trip: {trip.tripName}
+                            </InvertingText>
+                        </div>
+                    ) : null}
+                </Box>
+
+                <Box
+                    sx={{
+                        display: "flex",
+                    }}
+                >
                     {password && (
                         <>
                             <Button

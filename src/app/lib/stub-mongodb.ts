@@ -1,9 +1,9 @@
 import { TripShape } from "@/types/collections/trips"
-import { MongoClient } from "mongodb"
+import { Condition, MongoClient, ObjectId } from "mongodb"
 
 const TRIPS: TripShape[] = [
     {
-        _id: "a",
+        _id: new ObjectId("aaaaaaaaaaaaaaaaaaaaaaaa").toString(),
         description: "Description A",
         entryDate: new Date(),
         heading: "Heading A",
@@ -14,7 +14,7 @@ const TRIPS: TripShape[] = [
         privatePost: false,
     },
     {
-        _id: "b",
+        _id: new ObjectId("bbbbbbbbbbbbbbbbbbbbbbbb").toString(),
         description: "Description B",
         entryDate: new Date(),
         heading: "Heading B",
@@ -23,9 +23,10 @@ const TRIPS: TripShape[] = [
         longitude: 1,
         rawMarkdownContent: "## heading",
         privatePost: false,
+        tripName: "a",
     },
     {
-        _id: "b",
+        _id: new ObjectId("cccccccccccccccccccccccc").toString(),
         description: "Description C",
         entryDate: new Date(),
         heading: "Heading C",
@@ -36,7 +37,7 @@ const TRIPS: TripShape[] = [
         privatePost: false,
     },
     {
-        _id: "d",
+        _id: new ObjectId("dddddddddddddddddddddddd").toString(),
         description: "Description D",
         entryDate: new Date(),
         heading: "Heading D",
@@ -55,6 +56,11 @@ export async function stubMongoDB(): Promise<MongoClient> {
                 find: () => ({
                     toArray: () => TRIPS,
                 }),
+                findOne: ({ _id }: { _id: Condition<string> }) => {
+                    return TRIPS.find((trip) => {
+                        return trip._id.toString() === _id.toString()
+                    })
+                },
             }),
         }),
     } as unknown as MongoClient
