@@ -10,6 +10,7 @@ import { doesRequestContainPassword } from "@/utils"
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function GET(request: NextRequest) {
     const client = await clientPromise
+    console.log(client)
     const db = client.db()
     const trips = await db.collection<TripShape>("trips").find({}).toArray()
 
