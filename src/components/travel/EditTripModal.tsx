@@ -135,7 +135,7 @@ export function EditTripModal({ open, onClose, values }: Props) {
             return
         }
         onClose()
-    }, [rawMarkdown, heading, description, longitude, latitude])
+    }, [rawMarkdown, heading, description, longitude, latitude, tripName])
 
     return (
         <Modal open={open} onClose={onClose}>
