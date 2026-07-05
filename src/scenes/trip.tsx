@@ -265,6 +265,7 @@ export default function Travel({ tripId }: Props) {
                     rawMarkdown: trip.rawMarkdownContent,
                     longitude: trip.longitude,
                     latitude: trip.latitude,
+                    tripName: trip.tripName,
                 }}
             ></EditTripModal>
         </Box>
